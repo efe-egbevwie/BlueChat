@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "970491114979",
+    "project_id": "hermes-8d738",
+    "storage_bucket": "hermes-8d738.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970491114979:android:cac19c30664ea57fe11cd6",
+        "android_client_info": {
+          "package_name": "com.efe.bluechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970491114979-l5fsaae657ksejtvcp4fc97l9nia6us6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOcv1rnYLrpe1Bz8T5mi52kwawiopWTOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970491114979-l5fsaae657ksejtvcp4fc97l9nia6us6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
