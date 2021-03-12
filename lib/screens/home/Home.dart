@@ -1,8 +1,6 @@
 import 'package:bluechat/models/user.dart';
-import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
