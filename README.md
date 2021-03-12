@@ -6,45 +6,45 @@ Firebase auth is used to provide user authentication.
 Firebase Storage is used to host file storage for the app files like pictures etc.
 
 # Libraries/Packages used
-###Firebase Core
+## Firebase Core
 The Firebase core plugin connects the app to a firebase project.
 
-###Firebase auth
+## Firebase auth
 This flutter package enables the app to use the authentication methods provided by the Firebase Authentication API such as email and password sign in.
 
-###Cloud Firestore
+## Cloud Firestore
 This flutter package enables usage of the NoSQL, live-updated database provided by firebase.
 
-###Firebase Storage
+## Firebase Storage
 Flutter plugin for Firebase Cloud Storage, a powerful, simple, and cost-effective object storage service for Android and iOS.
 
-###Provider
+## Provider
 Used to manage state across widgets in the app. Essentially a wrapper around the flutter inheritedWidget to make it easier to use.
 
-###Flutter svg
+## Flutter svg
 An SVG rendering and widget library for Flutter, which allows painting and displaying Scalable Vector Graphics 1.1 files
 
-###Flushbar
+## Flushbar
 A package for showing highly customizable snackbars.
 
-###Image Picker
+## Image Picker
 Flutter plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera.
 
-#Core App logic
+# Core App logic
 The app uses streams to listen to firebase collections and documents and updates the UI immediately there is a new document written to the database.
 The new document writes are messages one user sends to the other and each user builds a message widget containing the message content when the stream emits new data.
 The widgets are built with the use of a streambuilder widget which accepts a stream and builds the message widget.
 
-#Pre-Requisites
+# Pre-Requisites
 The app can be run on both android and ios platforms.
 On android, a minimum sdk level 21 (android 5.0) is requires to run the app.
 On ios, a minimum of ios 8 is requires.
 
-#Running the project
+# Running the project
 To run the project, clone the repository and run flutter pub get to get the dependencies.
 You also have to register the app to your own firebase project, if you want to have access to and run it with your own database.
 
-#Pending features
+# Pending features
 A non-exhaustive list of pending features include:
 - Adding a time stamp to the message widget
 - Improving the UI of the authentication screens
@@ -56,10 +56,10 @@ A non-exhaustive list of pending features include:
 - Proper handling of potential errors from authentication
 - Adding file sharing support
 
-#Contribution
+# Contribution
 To make a contribution, just make a pull-request.
 
-#License
+# License
 The MIT License (MIT)
 Copyright © 2021 Efe Egbevwie
 
