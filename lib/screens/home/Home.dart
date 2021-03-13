@@ -1,4 +1,5 @@
 import 'package:bluechat/models/user.dart';
+import 'package:bluechat/screens/home/profile.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/database.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +38,16 @@ class _HomeState extends State<Home> {
                   return UserAccountsDrawerHeader(
                     accountName: Text(blueChatUser.name),
                     accountEmail: Text(blueChatUser.email),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: NetworkImage(blueChatUser.avatarUrl),
+                    currentAccountPicture: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                                  user: blueChatUser,
+                                )));
+                      },
+                      child: CircleAvatar(
+                        foregroundImage: NetworkImage(blueChatUser.avatarUrl),
+                      ),
                     ),
                   );
                 } else {

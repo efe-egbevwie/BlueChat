@@ -11,7 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen();
+  final BlueChatUser user;
+  const ProfileScreen({this.user});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -57,9 +58,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   child: CircleAvatar(
                     radius: 55,
-                    backgroundImage: profileImage != null
+                    foregroundImage: profileImage != null
                         ? FileImage(profileImage)
-                        : AssetImage('assets/avatar.png'),
+                        : NetworkImage(widget.user.avatarUrl),
+                    backgroundImage: AssetImage('assets/avatar.png'),
                   ),
                 ),
                 SizedBox(height: 40),
@@ -72,6 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             TextFormField(
+                              initialValue: widget.user.name ?? '',
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(29)),
@@ -132,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _databaseService.uploadProfileImage(profileImage);
       String avatarUrl = await _databaseService.getProfilePictureUrl();
       await _databaseService.updateUserData(BlueChatUser(
-          name: name,
+          name: widget.user.name ?? name,
           uid: uid,
           email: AuthService.getEmail(),
           avatarUrl: avatarUrl,
@@ -140,7 +143,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       uploading = true;
       setState(() {});
       Navigator.pushReplacementNamed(context, RouteGenerator.homeScreen);
-      //Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
     } finally {

@@ -55,10 +55,14 @@ class _ChatPageState extends State<ChatPage> {
                               if (message.uid == widget.user.uid) {
                                 return ChatBubble(
                                     message: message, isMe: false);
+                              } else{
+                                if(message.uid == AuthService.getUid()) {
+                                  return ChatBubble(
+                                      message: message,
+                                      isMe: true);
+                                }
+                                return null;
                               }
-                              return ChatBubble(
-                                  message: message,
-                                  isMe: message.uid == AuthService.getUid());
                             });
                   }
               }
