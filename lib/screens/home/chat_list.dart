@@ -1,5 +1,4 @@
 import 'package:bluechat/models/user.dart';
-import 'package:bluechat/routes.dart';
 import 'package:bluechat/screens/home/chatPage.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +40,7 @@ class ChatList extends StatelessWidget {
                 backgroundImage: NetworkImage(user.avatarUrl),
               ),
               title: Text(user.name),
+
             ),
           );
         },

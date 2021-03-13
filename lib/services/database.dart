@@ -81,7 +81,7 @@ class DatabaseService {
 
   static Stream<List<Message>> getMessages() =>
       FirebaseFirestore.instance
-          .collection('chats/messageBucket/messages')
+          .collection('chats/messageBucketm/messages')
           .orderBy('createdAt', descending: true)
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));

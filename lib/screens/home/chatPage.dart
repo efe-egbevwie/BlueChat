@@ -2,7 +2,9 @@ import 'package:bluechat/models/meaasge.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatPage extends StatefulWidget {
   final BlueChatUser user;
@@ -19,10 +21,6 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // leading: CircleAvatar(
-        //   backgroundImage:NetworkImage(widget.user.avatarUrl) ,
-        //   backgroundColor: Colors.black,
-        // ),
         backgroundColor: Theme.of(context).primaryColor,
         title: Center(child: Text(widget.user.name)),
       ),
@@ -55,11 +53,10 @@ class _ChatPageState extends State<ChatPage> {
                               if (message.uid == widget.user.uid) {
                                 return ChatBubble(
                                     message: message, isMe: false);
-                              } else{
-                                if(message.uid == AuthService.getUid()) {
+                              } else {
+                                if (message.uid == AuthService.getUid()) {
                                   return ChatBubble(
-                                      message: message,
-                                      isMe: true);
+                                      message: message, isMe: true);
                                 }
                                 return null;
                               }
@@ -83,37 +80,53 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+    return Column(
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        Container(
-          //alignment: Alignment.topLeft,
-          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.80,
-            ),
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
+        Row(
+          mainAxisAlignment:
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          children: [
+            Container(
+              //alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.80,
                 ),
-              ],
-            ),
-            child: Text(
-              message.message,
-              style: TextStyle(
-                color: Colors.black54,
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  message.message,
+                  style: TextStyle(
+                    color: Colors.black54,
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
+        Container(
+          padding: EdgeInsets.only(left: 23, right: 23),
+          child: Text(
+            DateFormat.jm().format(message.createdAt),
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+        )
       ],
     );
   }
@@ -133,8 +146,13 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
   String message = '';
 
   void sendMessage() async {
-    await DatabaseService.uploadMessage(widget.uid, message);
-    _controller.clear();
+    try {
+      await DatabaseService.uploadMessage(widget.uid, message);
+      _controller.clear();
+      message = '';
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -166,7 +184,10 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              message.trim().isEmpty ? null : sendMessage();
+              if (message != null) {
+                message.trim();
+                sendMessage();
+              }
             },
           ),
         ],

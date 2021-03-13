@@ -5,7 +5,7 @@ import 'package:bluechat/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/chat_list.dart';
+import 'chat_list.dart';
 
 class Home extends StatefulWidget {
   const Home();
