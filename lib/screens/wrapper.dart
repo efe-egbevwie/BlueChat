@@ -1,5 +1,6 @@
 import 'package:bluechat/models/user.dart';
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/screens/home/Home.dart';
+import 'package:bluechat/screens/home/Home.dart';
+
 import 'package:bluechat/screens/welcome.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -6,7 +6,6 @@ import 'package:bluechat/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
 import 'auth.dart';
 
 class DatabaseService {
@@ -17,12 +16,11 @@ class DatabaseService {
 
   BlueChatUser _userFromFireBaseSnapshot(DocumentSnapshot snapshot) {
     return BlueChatUser(
-      uid: AuthService.getUid(),
-      name: snapshot.data()['name'],
-      email: snapshot.data()['email'],
-      avatarUrl: snapshot.data()['avatarUrl'],
-      lastMessageTimeStamp: snapshot.data()['lastMessageTmeStamp']
-    );
+        uid: AuthService.getUid(),
+        name: snapshot.data()['name'],
+        email: snapshot.data()['email'],
+        avatarUrl: snapshot.data()['avatarUrl'],
+        lastMessageTimeStamp: snapshot.data()['lastMessageTmeStamp']);
   }
 
   Stream<BlueChatUser> get userData {
@@ -70,19 +68,23 @@ class DatabaseService {
     final messageCollection =
         FirebaseFirestore.instance.collection('chats/messageBucket/messages');
 
-    final newMessage =
-        Message(uid: AuthService.getUid(), message: message, createdAt: DateTime.now());
+    final newMessage = Message(
+        uid: AuthService.getUid(), message: message, createdAt: DateTime.now());
 
     await messageCollection.add(newMessage.toJson());
 
     final usersCollection = FirebaseFirestore.instance.collection('users');
-    await usersCollection.doc(uid).update({'lastMessageTimeStamp': DateTime.now()});
+    await usersCollection
+        .doc(uid)
+        .update({'lastMessageTimeStamp': DateTime.now()});
   }
 
-  static Stream<List<Message>> getMessages() =>
+  static Stream<List<Message>> getMessages(String uid) =>
       FirebaseFirestore.instance
-          .collection('chats/messageBucketm/messages')
+          .collection('chats/messageBucket/messages')
+          .where('uid', whereIn: [uid, AuthService.getUid()])
           .orderBy('createdAt', descending: true)
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));
+
 }

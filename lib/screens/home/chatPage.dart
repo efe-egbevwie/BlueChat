@@ -28,7 +28,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
               child: StreamBuilder<List<Message>>(
-            stream: DatabaseService.getMessages(),
+            stream: DatabaseService.getMessages(widget.user.uid),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:

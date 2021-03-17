@@ -3,6 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../utils.dart';
 
+
+
 @JsonSerializable()
 class BlueChatUser {
   final String uid;

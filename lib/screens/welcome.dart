@@ -1,5 +1,6 @@
 import 'package:bluechat/routes.dart';
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/widgets/widgets.dart';
+import 'package:bluechat/widgets/widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
