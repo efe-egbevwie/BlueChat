@@ -87,4 +87,13 @@ class DatabaseService {
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));
 
+  static Stream <List<Message>> getMostRecentMessage(String uid) =>
+      FirebaseFirestore.instance
+      .collection('chats/messageBucket/messages')
+      .where('uid', isEqualTo: uid)
+      .orderBy('createdAt', descending: true)
+      .limit(1)
+      .snapshots()
+      .transform(Utils.transformer(Message.fromJson));
+
 }

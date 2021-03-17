@@ -89,7 +89,6 @@ class ChatBubble extends StatelessWidget {
               isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Container(
-              //alignment: Alignment.topLeft,
               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
               child: Container(
                 constraints: BoxConstraints(
@@ -108,7 +107,7 @@ class ChatBubble extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Text(
+                child: SelectableText(
                   message.message,
                   style: TextStyle(
                     color: Colors.black54,

@@ -1,7 +1,7 @@
 import 'package:bluechat/models/user.dart';
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/widgets/widgets.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/database.dart';
+import 'package:bluechat/widgets/widgets.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,12 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 (SvgPicture.asset('assets/bluechat_logo.svg',
                     height: 150.0, width: 200.0)),
-                Text("SIGN UP TO BLUECHAT",
+                const Text("SIGN UP TO BLUECHAT",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     )),
-                SizedBox(height: 10),
+               const SizedBox(height: 10),
                 LoginAndSignUpWidget(
                   buttonText: 'SIGN UP',
                   routeToNavigate: RouteGenerator.homeScreen,

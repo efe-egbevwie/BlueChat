@@ -29,7 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
             children: [
               (SvgPicture.asset('assets/bluechat_logo.svg',
                   height: 150, width: 200)),
-              Text("WELCOME BACK",
+              const Text("WELCOME BACK",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,

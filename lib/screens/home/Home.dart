@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   BlueChatUser blueChatUser = snapshot.data;
-                  return UserAccountsDrawerHeader(
+                  return  UserAccountsDrawerHeader(
                     accountName: Text(blueChatUser.name),
                     accountEmail: Text(blueChatUser.email),
                     currentAccountPicture: GestureDetector(

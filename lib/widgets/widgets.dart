@@ -69,7 +69,7 @@ class _LoginAndSignUpWidgetState extends State<LoginAndSignUpWidget> {
                 authService.password = val.trim();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
