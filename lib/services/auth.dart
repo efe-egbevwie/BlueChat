@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +12,7 @@ class AuthService extends ChangeNotifier {
   String email = '';
   String password = '';
 
-  String registerErrorMessage = '';
+  String authErrorMessage = '';
 
   bool isLoading = false;
 
@@ -43,14 +45,30 @@ class AuthService extends ChangeNotifier {
           email: email, password: password);
       User user = userCredential.user;
       return user.uid;
-    } catch (e) {
-      registerErrorMessage = e.message;
-      print('Sign in error $e');
-      return null;
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      switch (e.code) {
+        case 'user-not-found':
+          authErrorMessage = 'Email not associated with an account';
+          break;
+        case 'wrong-password':
+          authErrorMessage = 'Invalid password';
+          break;
+        default:
+          {
+            authErrorMessage =
+                'An error has occurred please review your credentials and try again';
+          }
+      }
+    } on SocketException catch (e) {
+      print(e.toString());
+      authErrorMessage = 'Your Internet Connection is unavailable';
     } finally {
       notifyListeners();
     }
   }
+
+  
 
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
@@ -58,14 +76,31 @@ class AuthService extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user;
       return user.uid;
-    } catch (e) {
-      registerErrorMessage = e.message;
-      print('Sign up error $e');
-      return null;
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      switch (e.code) {
+        case 'email-already-in-use':
+          authErrorMessage =
+              'Email already associated with an account. Sign in instead';
+          break;
+        case 'auth/invalid-email':
+          authErrorMessage = 'Please enter a valid email';
+          break;
+        default:
+          {
+            authErrorMessage =
+                'An error has occurred please review your credentials and try again';
+          }
+      }
+    } on SocketException catch (e) {
+      print(e.toString());
+      authErrorMessage = 'Your Internet Connection is unavailable';
     } finally {
       notifyListeners();
     }
   }
+
+
 
   Future signOut() async {
     try {
