@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool uploading = false;
 
   final uid = AuthService.getUid();
-  File profileImage;
+  File selectedImage;
 
   String name;
   String phoneNumber;
@@ -33,6 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -58,9 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   child: CircleAvatar(
                     radius: 55,
-                    foregroundImage: profileImage != null
-                        ? FileImage(profileImage)
-                        : NetworkImage(widget.user.avatarUrl),
+                    foregroundImage: selectedImage != null ? FileImage(selectedImage) :  AssetImage('assets/avatar.png')  ,
                     backgroundImage: AssetImage('assets/avatar.png'),
                   ),
                 ),
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              initialValue: widget.user.name ?? '',
+                              initialValue: widget.user?.name ?? '',
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(29)),
@@ -132,19 +132,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void completeRegistration() async {
     try {
-      await _databaseService.uploadProfileImage(profileImage);
+      await _databaseService.uploadProfileImage(selectedImage);
       String avatarUrl = await _databaseService.getProfilePictureUrl();
       await _databaseService.updateUserData(BlueChatUser(
-          name: widget.user.name ?? name,
+          name: widget.user?.name ?? name,
           uid: uid,
           email: AuthService.getEmail(),
           avatarUrl: avatarUrl,
           lastMessageTimeStamp: DateTime.now()));
-      uploading = true;
-      setState(() {});
+      setState(() {uploading = true;});
       Navigator.pushReplacementNamed(context, RouteGenerator.homeScreen);
     } catch (e) {
-      print(e.toString());
+      print('profile error ${e.toString()} ');
     } finally {
       setState(() {
         uploading = false;
@@ -185,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _imageFromCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
+      selectedImage = File(pickedFile.path);
       setState(() {});
     } else {
       Flushbar(
@@ -199,8 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _imageFromGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
-      setState(() {});
+      setState(() {selectedImage = File(pickedFile.path);});
     } else {
       Flushbar(
         message: 'No Image Selected',

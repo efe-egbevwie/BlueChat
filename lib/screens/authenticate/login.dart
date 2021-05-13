@@ -61,7 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.of(context).pushReplacementNamed(RouteGenerator.homeScreen);
     } else {
       Flushbar(
-        message: authService.registerErrorMessage,
+        message: authService.authErrorMessage,
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
       )..show(context);

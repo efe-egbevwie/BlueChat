@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.of(context).pushNamed(RouteGenerator.profileScreen, arguments: authService.email);
     } else {
       Flushbar(
-        message: authService.registerErrorMessage,
+        message: authService.authErrorMessage,
         backgroundColor: Theme.of(context).errorColor,
         duration: Duration(seconds: 3),
       )..show(context);

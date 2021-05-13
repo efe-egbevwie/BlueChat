@@ -28,7 +28,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
               child: StreamBuilder<List<Message>>(
-            stream: DatabaseService.getMessages(widget.user.uid),
+            stream: DatabaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -50,15 +50,12 @@ class _ChatPageState extends State<ChatPage> {
                             itemCount: messages.length,
                             itemBuilder: (context, index) {
                               final message = messages[index];
-                              if (message.uid == widget.user.uid) {
+                              if (message.senderUid == AuthService.getUid()) {
+                                return ChatBubble(
+                                    message: message, isMe: true);
+                              } else{
                                 return ChatBubble(
                                     message: message, isMe: false);
-                              } else {
-                                if (message.uid == AuthService.getUid()) {
-                                  return ChatBubble(
-                                      message: message, isMe: true);
-                                }
-                                return null;
                               }
                             });
                   }
@@ -146,7 +143,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
 
   void sendMessage() async {
     try {
-      await DatabaseService.uploadMessage(widget.uid, message);
+      await DatabaseService.uploadMessage(senderUid: AuthService.getUid(), receiverUid: widget.uid, message: message);
       _controller.clear();
       message = '';
     } catch (e) {

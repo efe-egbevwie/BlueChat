@@ -68,7 +68,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  
+
 
   Future registerWithEmailAndPassword(String email, String password) async {
     try {

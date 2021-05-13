@@ -2,6 +2,7 @@ import 'package:bluechat/models/meaasge.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/screens/home/chatPage.dart';
 import 'package:bluechat/services/database.dart';
+import 'package:bluechat/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -36,10 +37,11 @@ class ChatList extends StatelessWidget {
               border: Border(bottom: BorderSide()),
             ),
             child: StreamProvider<List<Message>>.value(
+              initialData: [],
               value: DatabaseService.getMostRecentMessage(user.uid),
               child: Consumer<List<Message>>(
                 builder: (context, value, _) {
-                  final message = value[index];
+                  // final message = value[index];
                   return value == null
                       ? Center(child: CircularProgressIndicator())
                       : ListTile(
@@ -53,9 +55,9 @@ class ChatList extends StatelessWidget {
                             backgroundImage: NetworkImage(user.avatarUrl),
                           ),
                           title: Text(user.name),
-                          subtitle: Text(message.message),
-                          trailing:
-                              Text(DateFormat.jm().format(message.createdAt)),
+                          // subtitle: Text(message.message),
+                          // trailing:
+                          //     Text(DateFormat.jm().format(message.createdAt)),
                         );
                 },
               ),
