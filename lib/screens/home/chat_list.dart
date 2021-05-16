@@ -1,4 +1,4 @@
-import 'package:bluechat/models/meaasge.dart';
+import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/screens/home/chatPage.dart';
 import 'package:bluechat/services/database.dart';

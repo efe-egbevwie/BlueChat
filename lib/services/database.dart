@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bluechat/models/meaasge.dart';
+import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

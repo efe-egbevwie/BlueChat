@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'models/meaasge.dart';
+import 'models/message.dart';
 
 class Utils {
   static StreamTransformer transformer<T>(
