@@ -1,7 +1,4 @@
-import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
-import 'package:bluechat/services/database.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -57,16 +54,17 @@ class _SignInScreenState extends State<SignInScreen> {
     });
     dynamic result = await authService.signInWithEmailAndPassword(
         authService.email, authService.password);
-    if (result != null) {
-      Navigator.of(context).pushReplacementNamed(RouteGenerator.homeScreen);
-    } else {
-      Flushbar(
-        message: authService.authErrorMessage,
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    }
+    // if (result != null) {
+    //   Navigator.of(context).pushReplacementNamed(RouteGenerator.homeScreen);
+    // } else {
+    //   Flushbar(
+    //     message: authService.authErrorMessage,
+    //     backgroundColor: Colors.red,
+    //     duration: Duration(seconds: 3),
+    //   )..show(context);
+    // }
     authService.isLoading = false;
     setState(() {});
+    Navigator.of(context).pop();
   }
 }

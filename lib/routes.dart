@@ -1,4 +1,4 @@
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/screens/home/Home.dart';
+import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/screens/home/home.dart';
 import 'package:bluechat/screens/authenticate/login.dart';
 import 'package:bluechat/screens/authenticate/signup.dart';
 import 'package:bluechat/screens/home/chatPage.dart';

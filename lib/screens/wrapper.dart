@@ -1,13 +1,12 @@
-import 'package:bluechat/models/user.dart';
-import 'package:bluechat/screens/home/Home.dart';
-
+import 'package:bluechat/screens/home/home.dart';
 import 'package:bluechat/screens/welcome.dart';
-import 'package:bluechat/services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bluechat/services/auth_state.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class Wrapper extends StatefulWidget {
+  Wrapper(this._authState);
+  final AuthState _authState;
   @override
   _WrapperState createState() => _WrapperState();
 }
@@ -17,12 +16,15 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    final userState = Provider.of<BlueChatUser>(context);
-
-    if (userState == null) {
-      return WelcomeScreen();
-    } else {
-      return Home();
-    }
+    return PreferenceBuilder<String>(
+      preference: widget._authState.uid,
+      builder: (BuildContext context, String snapshot) {
+        if (snapshot == '0' || snapshot == null) {
+          return WelcomeScreen();
+        }else{
+          return Home();
+        }
+      },
+    );
   }
 }

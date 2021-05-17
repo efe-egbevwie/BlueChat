@@ -1,13 +1,17 @@
 import 'dart:io';
-
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/database.dart';
+import 'package:bluechat/services/shared_prefs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bluechat/service_locator.dart';
 import 'package:flutter/cupertino.dart';
+
+
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   DatabaseService databaseService;
+  SharedPrefs _prefs = locator<SharedPrefs>();
 
   String email = '';
   String password = '';
@@ -44,6 +48,8 @@ class AuthService extends ChangeNotifier {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = userCredential.user;
+      _prefs.setUid(user.uid);
+      print('UID ${user.uid} stored');
       return user.uid;
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -68,13 +74,12 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-
-
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user;
+      _prefs.setUid(user.uid);
       return user.uid;
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -100,11 +105,11 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-
-
   Future signOut() async {
     try {
-      return await _auth.signOut();
+      await _auth.signOut();
+      _prefs.removeUid();
+      print('UID ${_prefs.getUid().toString()} removed');
     } catch (e) {
       print(e.toString());
       return null;

@@ -71,7 +71,8 @@ class _HomeState extends State<Home> {
             ListTile(
                 onTap: () async {
                   await _auth.signOut();
-                  //Navigator.pushReplacementNamed(context, RouteGenerator.welcomeScreen);
+                  //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => WelcomeScreen()));
+
                 },
                 leading: Text('Sign Out'),
                 trailing: Icon(
