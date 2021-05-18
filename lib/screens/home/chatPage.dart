@@ -161,7 +161,15 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         children: <Widget>[
           Expanded(
             child: TextField(
-              decoration: InputDecoration.collapsed(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(29),
+                ),
+                enabled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(29)
+                ),
                 hintText: 'Send a message..',
               ),
               textCapitalization: TextCapitalization.sentences,
