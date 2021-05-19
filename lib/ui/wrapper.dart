@@ -1,5 +1,5 @@
-import 'package:bluechat/screens/home/home.dart';
-import 'package:bluechat/screens/welcome.dart';
+import 'package:bluechat/ui/home/home.dart';
+import 'package:bluechat/ui/welcome.dart';
 import 'package:bluechat/services/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';

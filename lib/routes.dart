@@ -1,12 +1,13 @@
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/screens/home/home.dart';
-import 'package:bluechat/screens/authenticate/login.dart';
-import 'package:bluechat/screens/authenticate/signup.dart';
-import 'package:bluechat/screens/home/chatPage.dart';
-import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/screens/home/profile.dart';
-import 'package:bluechat/screens/welcome.dart';
+
+import 'package:bluechat/ui/authenticate/login.dart';
+import 'package:bluechat/ui/authenticate/signup.dart';
+import 'package:bluechat/ui/home/chatPage.dart';
+import 'package:bluechat/ui/home/home.dart';
+import 'package:bluechat/ui/home/profile.dart';
+import 'package:bluechat/ui/welcome.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/authenticate/login.dart';
+
 
 class RouteGenerator {
   static const String welcomeScreen = '/';

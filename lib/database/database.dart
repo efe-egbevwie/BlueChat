@@ -6,7 +6,7 @@ import 'package:bluechat/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import 'auth.dart';
+import '../services/auth.dart';
 
 class DatabaseService {
   final CollectionReference userCollection =

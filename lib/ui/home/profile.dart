@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/auth.dart';
-import 'package:bluechat/services/database.dart';
 import 'package:bluechat/widgets/widgets.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';

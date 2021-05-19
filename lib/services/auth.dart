@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:bluechat/models/user.dart';
-import 'package:bluechat/services/database.dart';
+import 'file:///C:/Users/Efe/Documents/FlutterApps/bluechat/lib/database/database.dart';
 import 'package:bluechat/services/shared_prefs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bluechat/service_locator.dart';

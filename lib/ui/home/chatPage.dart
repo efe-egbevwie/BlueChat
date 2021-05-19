@@ -1,7 +1,7 @@
+import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
-import 'package:bluechat/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

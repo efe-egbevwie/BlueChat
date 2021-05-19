@@ -1,5 +1,5 @@
 import 'package:bluechat/routes.dart';
-import 'package:bluechat/screens/wrapper.dart';
+import 'package:bluechat/ui/wrapper.dart';
 import 'package:bluechat/service_locator.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/auth_state.dart';

@@ -1,7 +1,7 @@
+import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/user.dart';
-import 'package:bluechat/screens/home/profile.dart';
+import 'package:bluechat/ui/home/profile.dart';
 import 'package:bluechat/services/auth.dart';
-import 'package:bluechat/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,8 +71,6 @@ class _HomeState extends State<Home> {
             ListTile(
                 onTap: () async {
                   await _auth.signOut();
-                  //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => WelcomeScreen()));
-
                 },
                 leading: Text('Sign Out'),
                 trailing: Icon(
