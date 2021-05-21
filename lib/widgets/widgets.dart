@@ -6,9 +6,15 @@ class LoginAndSignUpWidget extends StatefulWidget {
   final String buttonText;
   final String routeToNavigate;
   final Function onPressed;
+  String email;
+  String password;
 
-  const LoginAndSignUpWidget(
-      {this.buttonText, this.routeToNavigate, this.onPressed});
+  LoginAndSignUpWidget(
+      {this.buttonText,
+      this.routeToNavigate,
+      this.onPressed,
+      this.email,
+      this.password});
 
   @override
   State<StatefulWidget> createState() => _LoginAndSignUpWidgetState();
@@ -43,7 +49,7 @@ class _LoginAndSignUpWidgetState extends State<LoginAndSignUpWidget> {
               ),
               validator: (val) => val.isEmpty ? 'Please enter an email' : null,
               onChanged: (val) {
-                authService.email = val.trim();
+                widget.email = val.trim();
               },
             ),
             SizedBox(height: 20),
@@ -54,7 +60,7 @@ class _LoginAndSignUpWidgetState extends State<LoginAndSignUpWidget> {
                     icon: Icon(Icons.visibility_sharp),
                     onPressed: () {
                       setState(() {
-                        obscureText = ! obscureText;
+                        obscureText = !obscureText;
                       });
                     },
                   ),
@@ -66,7 +72,7 @@ class _LoginAndSignUpWidgetState extends State<LoginAndSignUpWidget> {
                   ? 'Please input a password with 6 or more characters'
                   : null,
               onChanged: (val) {
-                authService.password = val.trim();
+                widget.password = val.trim();
               },
             ),
             const SizedBox(
@@ -131,6 +137,3 @@ class RoundButton extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -1,11 +1,14 @@
 import 'package:bluechat/routes.dart';
+import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/wrapper.dart';
 import 'package:bluechat/service_locator.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/auth_state.dart';
 import 'package:bluechat/services/shared_prefs.dart';
+import 'package:bluechat/view_models/login_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
@@ -30,12 +33,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => LoginViewModel())
       ],
       child: PreferenceBuilder<String>(
         preference: authState.uid,
         builder: (context, snapshot) {
-          return MaterialApp(
+          return GetMaterialApp(
             title: 'BlueChat',
+            navigatorKey: locator<NavigationService>().navigationKey,
             theme: ThemeData(
               iconTheme: IconThemeData(color: Theme.of(context).accentColor),
               primarySwatch: Colors.blue,
