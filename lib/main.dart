@@ -1,6 +1,6 @@
 import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/navigation_service.dart';
-import 'package:bluechat/ui/wrapper.dart';
+import 'package:bluechat/ui/authentication_wrapper.dart';
 import 'package:bluechat/service_locator.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/auth_state.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               accentColor: Colors.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: Wrapper(authState),
+            home: AuthenticationWrapper(authState),
             onGenerateRoute: RouteGenerator.generateRoute,
           );
         }

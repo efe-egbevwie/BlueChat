@@ -8,10 +8,10 @@ import 'package:bluechat/widgets/widgets.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   final BlueChatUser user;
+
   const ProfileScreen({this.user});
 
   @override
@@ -34,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -47,20 +46,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 SizedBox(height: 40),
-                Text(
-                  'Create A Profile',
-                  style: TextStyle(fontSize: 30, color: Colors.blue),
-                ),
-                SizedBox(
-                  height: 40.0,
-                ),
+                Text('Create A Profile',
+                    style: TextStyle(fontSize: 30, color: Colors.blue)),
+                SizedBox(height: 40.0),
                 GestureDetector(
                   onTap: () {
                     showPicker(context);
                   },
                   child: CircleAvatar(
                     radius: 55,
-                    foregroundImage: selectedImage != null ? FileImage(selectedImage) :  AssetImage('assets/avatar.png')  ,
+                    foregroundImage: selectedImage != null
+                        ? FileImage(selectedImage)
+                        : AssetImage('assets/avatar.png'),
                     backgroundImage: AssetImage('assets/avatar.png'),
                   ),
                 ),
@@ -85,9 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 name = val;
                               },
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
+                            SizedBox(height: 20),
                             TextFormField(
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -103,22 +98,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SizedBox(height: 20),
                       uploading
-                          ? CircularProgressIndicator()
-                          : RoundButton(
-                              buttonText: 'Create Profile',
-                              buttonColor: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              onPressed: () async {
-                                FocusScope.of(context).unfocus();
-                                if (_formKey.currentState.validate()) {
-                                  setState(() {
-                                    uploading = true;
-                                  });
-                                  completeRegistration();
-                                  print('uid:' + AuthService.getUid());
-                                }
-                              },
-                            )
+                          ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
+                          : ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            setState(() => uploading = true);
+                            completeRegistration();
+                          }
+                        },
+                        child: Text('Create profile'),
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            minimumSize: Size(size.width * 0.8, 50),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30))),
+                      ),
                     ],
                   ),
                 )
@@ -140,7 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           email: AuthService.getEmail(),
           avatarUrl: avatarUrl,
           lastMessageTimeStamp: DateTime.now()));
-      setState(() {uploading = true;});
+      setState(() {
+        uploading = true;
+      });
       Navigator.pushReplacementNamed(context, RouteGenerator.homeScreen);
     } catch (e) {
       print('profile error ${e.toString()} ');
@@ -198,7 +194,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _imageFromGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {selectedImage = File(pickedFile.path);});
+      setState(() {
+        selectedImage = File(pickedFile.path);
+      });
     } else {
       Flushbar(
         message: 'No Image Selected',

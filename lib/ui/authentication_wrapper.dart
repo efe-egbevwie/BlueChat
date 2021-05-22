@@ -4,14 +4,14 @@ import 'package:bluechat/services/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
-class Wrapper extends StatefulWidget {
-  Wrapper(this._authState);
+class AuthenticationWrapper extends StatefulWidget {
+  AuthenticationWrapper(this._authState);
   final AuthState _authState;
   @override
-  _WrapperState createState() => _WrapperState();
+  _AuthenticationWrapperState createState() => _AuthenticationWrapperState();
 }
 
-class _WrapperState extends State<Wrapper> {
+class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
   bool isLoggedIn = false;
 
   @override
