@@ -5,6 +5,14 @@ class NavigationService {
 
   GlobalKey<NavigatorState> get navigationKey => _navigationKey;
 
+  Future push(Route route) {
+    return _navigationKey.currentState.push(route);
+  }
+
+  Future pushNamed(String routeName, {dynamic arguments}) {
+    return _navigationKey.currentState.pushNamed(routeName, arguments: arguments);
+  }
+
   Future pushAndRemove(String routeName, {dynamic arguments}) {
     return _navigationKey.currentState.pushNamedAndRemoveUntil(
         routeName, (route) => false,

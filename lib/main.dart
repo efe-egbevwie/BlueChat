@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               iconTheme: IconThemeData(color: Theme.of(context).accentColor),
               primarySwatch: Colors.blue,
+              accentColor: Colors.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             home: Wrapper(authState),

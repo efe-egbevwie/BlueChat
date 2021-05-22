@@ -1,6 +1,7 @@
 import 'package:bluechat/routes.dart';
-import 'package:bluechat/widgets/widgets.dart';
-
+import 'package:bluechat/service_locator.dart';
+import 'package:bluechat/services/navigation_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,6 +11,8 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var _navigationService = locator<NavigationService>();
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
@@ -17,24 +20,34 @@ class WelcomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              (SvgPicture.asset(
-                'assets/bluechat_logo.svg',
-              )),
+              (SvgPicture.asset('assets/bluechat_logo.svg', height: 200)),
               (SvgPicture.asset('assets/bluechat_splash.svg')),
-              RoundButton(
-                buttonText: "SIGN UP",
-                buttonColor: Colors.white,
-                textColor: Theme.of(context).primaryColor,
+              ElevatedButton(
+                child: Text('SIGN UP',
+                    style: TextStyle(color: Theme.of(context).primaryColor)),
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                  minimumSize: Size(size.width * 0.8, 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(RouteGenerator.signUpScreen);
+                  _navigationService.pushNamed(RouteGenerator.signUpScreen);
                 },
               ),
-              RoundButton(
-                buttonText: "SIGN IN",
-                buttonColor: Colors.white,
-                textColor: Theme.of(context).primaryColor,
+              SizedBox(height: 20),
+              ElevatedButton(
+                child: Text('SIGN IN',
+                    style: TextStyle(color: Theme.of(context).accentColor)),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    minimumSize: Size(size.width * 0.8, 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    side: BorderSide(
+                        color: Theme.of(context).accentColor, width: 2.0)),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(RouteGenerator.signInScreen);
+                  _navigationService.pushNamed(RouteGenerator.signInScreen);
                 },
               ),
             ],
