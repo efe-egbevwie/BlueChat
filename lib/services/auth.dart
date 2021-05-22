@@ -88,7 +88,7 @@ class AuthService extends ChangeNotifier {
           authErrorMessage =
               'Email already associated with an account. Sign in instead';
           break;
-        case 'auth/invalid-email':
+        case 'invalid-email':
           authErrorMessage = 'Please enter a valid email';
           break;
         default:

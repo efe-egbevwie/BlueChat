@@ -6,6 +6,7 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/auth_state.dart';
 import 'package:bluechat/services/shared_prefs.dart';
 import 'package:bluechat/view_models/login_view_model.dart';
+import 'package:bluechat/view_models/signup_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => LoginViewModel())
+        ChangeNotifierProvider(create: (context) => LoginViewModel()),
+        ChangeNotifierProvider(create: (context) => SignUpViewModel())
       ],
       child: PreferenceBuilder<String>(
         preference: authState.uid,

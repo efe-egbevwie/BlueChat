@@ -1,5 +1,3 @@
-import 'package:bluechat/service_locator.dart';
-import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/view_models/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -91,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 20),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     loginViewModel.isLoading
-                        ? CircularProgressIndicator()
+                        ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
                         : Expanded(
                           child: ElevatedButton(
                               child: Text('Sign in'),
