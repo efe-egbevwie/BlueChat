@@ -5,6 +5,7 @@ import 'package:bluechat/service_locator.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/auth_state.dart';
 import 'package:bluechat/services/shared_prefs.dart';
+import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/view_models/login_view_model.dart';
 import 'package:bluechat/view_models/signup_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-        ChangeNotifierProvider(create: (context) => SignUpViewModel())
+        ChangeNotifierProvider(create: (context) => SignUpViewModel()),
+        ChangeNotifierProvider(create: (context) => ChatPageViewModel())
       ],
       child: PreferenceBuilder<String>(
         preference: authState.uid,

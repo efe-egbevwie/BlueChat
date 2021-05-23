@@ -2,9 +2,11 @@ import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
   final BlueChatUser user;
@@ -27,41 +29,42 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-              child: StreamBuilder<List<Message>>(
-            stream: DatabaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
+            child: StreamBuilder<List<Message>>(
+              stream: DatabaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
+              builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                if (snapshot.hasError) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: Text('Something Went Wrong'),
                   );
-                default:
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Something Went Wrong'),
-                    );
-                  } else {
-                    final messages = snapshot.data;
-                    return messages.isEmpty
-                        ? Text('Say Hello')
-                        : ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            reverse: true,
-                            itemCount: messages.length,
-                            itemBuilder: (context, index) {
-                              final message = messages[index];
-                              if (message.senderUid == AuthService.getUid()) {
-                                return ChatBubble(
-                                    message: message, isMe: true);
-                              } else{
-                                return ChatBubble(
-                                    message: message, isMe: false);
-                              }
-                            });
-                  }
-              }
-            },
-          )),
+                } else {
+                  final messages = snapshot.data;
+                  return messages.isEmpty
+                      ? Text('Say Hello')
+                      : ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          reverse: true,
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) {
+                            final message = messages[index];
+                            if (message.senderUid == AuthService.getUid()) {
+                              return ChatBubble(
+                                  message: message, isMe: true);
+                            } else{
+                              return ChatBubble(
+                                  message: message, isMe: false);
+                            }
+                          });
+                }
+            }
+              },
+            ),
+          ),
           NewMessageWidget(uid: widget.user.uid)
         ],
       ),
@@ -139,20 +142,17 @@ class NewMessageWidget extends StatefulWidget {
 
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
-  String message = '';
 
-  void sendMessage() async {
-    try {
-      await DatabaseService.uploadMessage(senderUid: AuthService.getUid(), receiverUid: widget.uid, message: message);
-      _controller.clear();
-      message = '';
-    } catch (e) {
-      print(e.toString());
-    }
+  @override
+  void dispose() {
+    _controller.clear();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final chatPageViewModel = Provider.of<ChatPageViewModel>(context);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       height: 70,
@@ -176,11 +176,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
               controller: _controller,
               autocorrect: true,
               enableSuggestions: true,
-              onChanged: (val) {
-                setState(() {
-                  message = val;
-                });
-              },
+
             ),
           ),
           IconButton(
@@ -188,9 +184,9 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              if (message != null) {
-                message.trim();
-                sendMessage();
+              if(_controller.text.isNotEmpty) {
+                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _controller.text);
+                _controller.clear();
               }
             },
           ),
