@@ -1,10 +1,13 @@
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/user.dart';
+import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/home/profile.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:bluechat/ui/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../service_locator.dart';
 import 'chat_list.dart';
 
 class Home extends StatefulWidget {
@@ -15,11 +18,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  NavigationService _navigationService = locator<NavigationService>();
+  
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthService>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
@@ -61,7 +66,11 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                _navigationService.push(
+                  MaterialPageRoute(builder: (context) => SettingsScreen())
+                );
+              },
               leading: Text('Settings'),
               trailing: Icon(
                 Icons.settings,
