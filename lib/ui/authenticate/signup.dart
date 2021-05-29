@@ -1,12 +1,7 @@
-import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/view_models/signup_view_model.dart';
-import 'package:bluechat/widgets/widgets.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
-import '../../routes.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen();
@@ -49,7 +44,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontSize: 20,
                     )),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 50.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 50.0, horizontal: 50.0),
                   margin: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -64,11 +60,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.mail),
                             hintText: 'Email',
+                            enabled: true,
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).accentColor),
+                                borderRadius: BorderRadius.circular(29)),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(29)),
                           ),
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                           validator: (val) =>
-                          val.isEmpty ? 'Please enter an email' : null,
+                              val.isEmpty ? 'Please enter an email' : null,
                           controller: emailController,
                         ),
                         SizedBox(height: 20),
@@ -84,37 +87,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                               ),
                               hintText: 'Password',
+                              enabled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(29)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(29))),
                           obscureText: obscureText,
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
                           validator: (val) => val.length < 6
                               ? 'Please input a password with 6 or more characters'
                               : null,
                           controller: passwordController,
                         ),
                         const SizedBox(height: 20),
-                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          signUpViewModel.isLoading
-                              ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
-                              : Expanded(
-                            child: ElevatedButton(
-                              child: Text('Sign Up'),
-                              style: ElevatedButton.styleFrom(
-                                  primary: Theme.of(context).primaryColor,
-                                  minimumSize: Size(size.width * 0.8, 50),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                              onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                  FocusScope.of(context).unfocus();
-                                  signUpViewModel.signUp(
-                                      email: emailController.text.trim(),
-                                      password: passwordController.text.trim());
-                                }
-                              },
-                            ),
-                          ),
-                        ]),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              signUpViewModel.isLoading
+                                  ? CircularProgressIndicator(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor)
+                                  : Expanded(
+                                      child: ElevatedButton(
+                                        child: Text('Sign Up'),
+                                        style: ElevatedButton.styleFrom(
+                                            primary:
+                                                Theme.of(context).primaryColor,
+                                            minimumSize:
+                                                Size(size.width * 0.8, 50),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30))),
+                                        onPressed: () {
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            FocusScope.of(context).unfocus();
+                                            signUpViewModel.signUp(
+                                                email:
+                                                    emailController.text.trim(),
+                                                password: passwordController
+                                                    .text
+                                                    .trim());
+                                          }
+                                        },
+                                      ),
+                                    ),
+                            ]),
                       ],
                     ),
                   ),
@@ -123,23 +144,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           )),
     );
-  }
-
-  void signUpSubmit() async {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    setState(() => authService.isLoading = true);
-    dynamic result = await authService.registerWithEmailAndPassword(
-        authService.email, authService.password);
-    if (result != null) {
-      print('the uid is: $result');
-      Navigator.of(context).pushNamed(RouteGenerator.profileScreen, arguments: authService.email);
-    } else {
-      Flushbar(
-        message: authService.authErrorMessage,
-        backgroundColor: Theme.of(context).errorColor,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    }
-    setState(() => authService.isLoading = false);
   }
 }

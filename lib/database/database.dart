@@ -50,11 +50,10 @@ class DatabaseService {
   }
 
   Future<String> getProfilePictureUrl() async {
-    String imageUrl = await firebaseStorage
+    return await firebaseStorage
         .ref('ProfileImages')
         .child(AuthService.getUid().toString())
         .getDownloadURL();
-    return imageUrl;
   }
 
   static Stream<List<BlueChatUser>> getUsers() => FirebaseFirestore.instance
@@ -69,6 +68,8 @@ class DatabaseService {
     final messageCollection = FirebaseFirestore.instance
         .collection('chats/message_database/messages');
 
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+
     final newMessage = Message(
         senderUid: AuthService.getUid(),
         receiverUid: receiverUid,
@@ -78,7 +79,6 @@ class DatabaseService {
 
     await messageCollection.add(newMessage.toJson());
 
-    final usersCollection = FirebaseFirestore.instance.collection('users');
     await usersCollection
         .doc(senderUid)
         .update({'lastMessageTimeStamp': DateTime.now()});

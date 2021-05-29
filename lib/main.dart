@@ -21,7 +21,10 @@ void main() async {
   final authState = AuthState(_prefs);
   await Firebase.initializeApp();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  runApp(MyApp(authState: authState, savedThemeMode: savedThemeMode,));
+  runApp(MyApp(
+    authState: authState,
+    savedThemeMode: savedThemeMode,
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -50,32 +53,29 @@ class _MyAppState extends State<MyApp> {
           builder: (context, snapshot) {
             return AdaptiveTheme(
                 light: ThemeData(
-                  brightness: Brightness.light,
-                  primarySwatch: Colors.blue,
-                  accentColor: Colors.white,
+                    brightness: Brightness.light,
+                    primarySwatch: Colors.blue,
+                    accentColor: Colors.white,
                     floatingActionButtonTheme: FloatingActionButtonThemeData(
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                     ),
-                    iconTheme: IconThemeData(
-                      color: Colors.white,
-                    ),
+                    iconTheme: IconThemeData(color: Colors.white),
                     textTheme: Theme.of(context).textTheme.apply(
-                      displayColor: Colors.black,
-                      bodyColor: Colors.black,
-                    )
-                ),
+                          displayColor: Colors.black,
+                          bodyColor: Colors.black,
+                        )),
                 dark: ThemeData(
                     brightness: Brightness.dark,
                     primaryColor: Colors.grey[800],
                     accentColor: Colors.purple,
                     hintColor: Colors.purple,
                     textTheme: Theme.of(context).textTheme.apply(
-                      displayColor: Colors.white,
-                      bodyColor: Colors.white,
-                    ),
-                    iconTheme: IconThemeData(color: Theme.of(context).accentColor)
-                ),
+                          displayColor: Colors.white,
+                          bodyColor: Colors.white,
+                        ),
+                    iconTheme:
+                        IconThemeData(color: Theme.of(context).accentColor)),
                 initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
                 builder: (theme, darkTheme) => GetMaterialApp(
                       title: 'BlueChat',

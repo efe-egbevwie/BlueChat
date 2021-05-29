@@ -38,17 +38,14 @@ class _SignInScreenState extends State<SignInScreen> {
           (SvgPicture.asset('assets/bluechat_logo.svg',
               height: 150, width: 200)),
           const Text("WELCOME BACK",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              )),
+              style: TextStyle(color: Colors.white, fontSize: 20)),
           Container(
-              padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 50.0),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
-                ),
+            padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 50.0),
+            margin: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -58,9 +55,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.mail),
                       hintText: 'Email',
+                      enabled: true,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(29)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(29)),
                     ),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                     validator: (val) =>
                         val.isEmpty ? 'Please enter an email' : null,
                     controller: emailController,
@@ -78,8 +81,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           },
                         ),
                         hintText: 'Password',
+                        enabled: true,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(29)),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(29))),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                     obscureText: obscureText,
                     validator: (val) => val.length < 6
                         ? 'Please input a password with 6 or more characters'
@@ -89,9 +98,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 20),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     loginViewModel.isLoading
-                        ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
+                        ? CircularProgressIndicator(
+                            backgroundColor: Theme.of(context).primaryColor)
                         : Expanded(
-                          child: ElevatedButton(
+                            child: ElevatedButton(
                               child: Text('Sign in'),
                               style: ElevatedButton.styleFrom(
                                   primary: Theme.of(context).primaryColor,
@@ -107,7 +117,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 }
                               },
                             ),
-                        ),
+                          ),
                   ]),
                 ],
               ),
@@ -117,5 +127,4 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     ));
   }
-
 }
