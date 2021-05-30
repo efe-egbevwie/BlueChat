@@ -4,6 +4,7 @@ import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:bluechat/widgets/widgets.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File selectedImage;
 
   String name;
-  String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -70,23 +70,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          TextFormField(
-                            initialValue: widget.user?.name ?? '',
-                            decoration: InputDecoration(
-                                enabled: true,
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(29)),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(29)),
-                                hintText: 'Name'),
-                            style: TextStyle(color: Colors.black),
+                          CustomTextField(
+                            hintText: 'Name',
+                            textColor: Colors.black,
+                            textCapitalization: TextCapitalization.none,
+                            borderColor: Theme.of(context).primaryColor,
                             validator: (val) =>
                                 val.isEmpty ? 'please enter a Name' : null,
-                            onChanged: (val) {
-                              name = val;
-                            },
+                            initialValue: widget.user?.name,
+                            onChanged: (val) => name = val,
                           ),
                         ],
                       ),

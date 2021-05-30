@@ -3,6 +3,7 @@ import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
+import 'package:bluechat/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,38 +31,40 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
-              stream: DatabaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
+              stream: DatabaseService.getMessages(
+                  senderUid: AuthService.getUid(),
+                  receiverUid: widget.user.uid),
               builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              default:
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Something Went Wrong'),
-                  );
-                } else {
-                  final messages = snapshot.data;
-                  return messages.isEmpty
-                      ? Text('Say Hello')
-                      : ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          reverse: true,
-                          itemCount: messages.length,
-                          itemBuilder: (context, index) {
-                            final message = messages[index];
-                            if (message.senderUid == AuthService.getUid()) {
-                              return ChatBubble(
-                                  message: message, isMe: true);
-                            } else{
-                              return ChatBubble(
-                                  message: message, isMe: false);
-                            }
-                          });
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  default:
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Something Went Wrong'),
+                      );
+                    } else {
+                      final messages = snapshot.data;
+                      return messages.isEmpty
+                          ? Text('Say Hello')
+                          : ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              reverse: true,
+                              itemCount: messages.length,
+                              itemBuilder: (context, index) {
+                                final message = messages[index];
+                                if (message.senderUid == AuthService.getUid()) {
+                                  return ChatBubble(
+                                      message: message, isMe: true);
+                                } else {
+                                  return ChatBubble(
+                                      message: message, isMe: false);
+                                }
+                              });
+                    }
                 }
-            }
               },
             ),
           ),
@@ -141,11 +144,11 @@ class NewMessageWidget extends StatefulWidget {
 }
 
 class _NewMessageWidgetState extends State<NewMessageWidget> {
-  final _controller = TextEditingController();
+  final _messageController = TextEditingController();
 
   @override
   void dispose() {
-    _controller.clear();
+    _messageController.clear();
     super.dispose();
   }
 
@@ -160,23 +163,12 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(29),
-                ),
-                enabled: true,
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                    borderRadius: BorderRadius.circular(29)
-                ),
-                hintText: 'Send a message..',
-              ),
+            child: CustomTextField(
+              hintText: 'Send a message',
+              borderColor: Theme.of(context).primaryColor,
+              textColor: Colors.black,
               textCapitalization: TextCapitalization.sentences,
-              controller: _controller,
-              autocorrect: true,
-              enableSuggestions: true,
-
+              controller: _messageController,
             ),
           ),
           IconButton(
@@ -184,9 +176,10 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              if(_controller.text.isNotEmpty) {
-                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _controller.text);
-                _controller.clear();
+              if (_messageController.text.isNotEmpty) {
+                chatPageViewModel.sendMessage(
+                    receiverUid: widget.uid, message: _messageController.text);
+                _messageController.clear();
               }
             },
           ),

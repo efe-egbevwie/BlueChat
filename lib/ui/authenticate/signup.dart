@@ -1,4 +1,5 @@
 import 'package:bluechat/view_models/signup_view_model.dart';
+import 'package:bluechat/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -56,52 +57,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.mail),
-                            hintText: 'Email',
-                            enabled: true,
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).accentColor),
-                                borderRadius: BorderRadius.circular(29)),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(29)),
-                          ),
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                        CustomTextField(
+                          prefixIcon: Icon(Icons.mail),
+                          hintText: 'Email',
+                          textCapitalization: TextCapitalization.none,
+                          borderColor: Theme.of(context).primaryColor,
+                          textColor: Theme.of(context).primaryColor,
                           validator: (val) =>
                               val.isEmpty ? 'Please enter an email' : null,
                           controller: emailController,
                         ),
                         SizedBox(height: 20),
-                        TextFormField(
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.visibility_sharp),
-                                onPressed: () {
-                                  setState(() {
-                                    obscureText = !obscureText;
-                                  });
-                                },
-                              ),
-                              hintText: 'Password',
-                              enabled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(29)),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(29))),
+                        CustomTextField(
+                          hintText: 'Password',
+                          prefixIcon: Icon(Icons.lock),
                           obscureText: obscureText,
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                          validator: (val) => val.length < 6
-                              ? 'Please input a password with 6 or more characters'
-                              : null,
+                          textCapitalization: TextCapitalization.none,
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility_sharp),
+                            onPressed: () {
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            },
+                          ),
+                          borderColor: Theme.of(context).primaryColor,
+                          textColor: Theme.of(context).primaryColor,
                           controller: passwordController,
                         ),
+                        SizedBox(height: 20),
                         const SizedBox(height: 20),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,

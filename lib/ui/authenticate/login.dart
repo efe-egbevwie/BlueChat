@@ -1,4 +1,5 @@
 import 'package:bluechat/view_models/login_view_model.dart';
+import 'package:bluechat/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -51,48 +52,32 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.mail),
-                      hintText: 'Email',
-                      enabled: true,
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                          borderRadius: BorderRadius.circular(29)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(29)),
-                    ),
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  CustomTextField(
+                    prefixIcon: Icon(Icons.mail),
+                    hintText: 'Email',
+                    textCapitalization: TextCapitalization.none,
+                    borderColor: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryColor,
                     validator: (val) =>
                         val.isEmpty ? 'Please enter an email' : null,
                     controller: emailController,
                   ),
                   SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.visibility_sharp),
-                          onPressed: () {
-                            setState(() {
-                              obscureText = !obscureText;
-                            });
-                          },
-                        ),
-                        hintText: 'Password',
-                        enabled: true,
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor),
-                            borderRadius: BorderRadius.circular(29)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(29))),
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  CustomTextField(
+                    hintText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
                     obscureText: obscureText,
-                    validator: (val) => val.length < 6
-                        ? 'Please input a password with 6 or more characters'
-                        : null,
+                    textCapitalization: TextCapitalization.none,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.visibility_sharp),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                    ),
+                    borderColor: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryColor,
                     controller: passwordController,
                   ),
                   const SizedBox(height: 20),
