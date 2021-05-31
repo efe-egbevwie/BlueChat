@@ -36,10 +36,8 @@ class _SignInScreenState extends State<SignInScreen> {
       height: double.infinity,
       child: SingleChildScrollView(
         child: Column(children: [
-          (SvgPicture.asset('assets/bluechat_logo.svg',
-              height: 150, width: 200)),
-          const Text("WELCOME BACK",
-              style: TextStyle(color: Colors.white, fontSize: 20)),
+          (SvgPicture.asset('assets/bluechat_logo.svg', height: 150, width: 200)),
+          const Text("WELCOME BACK", style: TextStyle(color: Colors.white, fontSize: 20)),
           Container(
             padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 50.0),
             margin: EdgeInsets.symmetric(vertical: 10),
@@ -58,8 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     textCapitalization: TextCapitalization.none,
                     borderColor: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryColor,
-                    validator: (val) =>
-                        val.isEmpty ? 'Please enter an email' : null,
+                    validator: (val) => val.isEmpty ? 'Please enter an email' : null,
                     controller: emailController,
                   ),
                   SizedBox(height: 20),
@@ -83,26 +80,20 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 20),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     loginViewModel.isLoading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor)
+                        ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
                         : Expanded(
-                            child: ElevatedButton(
-                              child: Text('Sign in'),
-                              style: ElevatedButton.styleFrom(
-                                  primary: Theme.of(context).primaryColor,
-                                  minimumSize: Size(size.width * 0.8, 50),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                              onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                  FocusScope.of(context).unfocus();
-                                  loginViewModel.login(
-                                      email: emailController.text.trim(),
-                                      password: passwordController.text.trim());
-                                }
-                              },
-                            ),
-                          ),
+                            child: CustomRoundButton(
+                                buttonText: 'Sign in',
+                                buttonColor: Theme.of(context).primaryColor,
+                                borderColor: Theme.of(context).primaryColor,
+                                size: Size(size.width * 0.8, 50),
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    FocusScope.of(context).unfocus();
+                                    loginViewModel.login(
+                                        email: emailController.text.trim(), password: passwordController.text.trim());
+                                  }
+                                })),
                   ]),
                 ],
               ),

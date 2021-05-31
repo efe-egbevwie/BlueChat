@@ -19,9 +19,7 @@ class AuthService extends ChangeNotifier {
   bool isLoading = false;
 
   BlueChatUser _userFromFirebase(User user) {
-    return user != null
-        ? BlueChatUser(uid: user.uid, name: email, avatarUrl: null)
-        : null;
+    return user != null ? BlueChatUser(uid: user.uid, name: email, avatarUrl: null) : null;
   }
 
   static String getUid() {
@@ -43,8 +41,7 @@ class AuthService extends ChangeNotifier {
 
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user;
       _prefs.setUid(user.uid);
       print('UID ${user.uid} stored');
@@ -60,8 +57,7 @@ class AuthService extends ChangeNotifier {
           break;
         default:
           {
-            authErrorMessage =
-                'An error has occurred please review your credentials and try again';
+            authErrorMessage = 'An error has occurred please review your credentials and try again';
           }
       }
     } on SocketException catch (e) {
@@ -74,24 +70,21 @@ class AuthService extends ChangeNotifier {
 
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user;
       return user.uid;
     } on FirebaseAuthException catch (e) {
       print(e.code);
       switch (e.code) {
         case 'email-already-in-use':
-          authErrorMessage =
-              'Email already associated with an account. Sign in instead';
+          authErrorMessage = 'Email already associated with an account. Sign in instead';
           break;
         case 'invalid-email':
           authErrorMessage = 'Please enter a valid email';
           break;
         default:
           {
-            authErrorMessage =
-                'An error has occurred please review your credentials and try again';
+            authErrorMessage = 'An error has occurred please review your credentials and try again';
           }
       }
     } on SocketException catch (e) {

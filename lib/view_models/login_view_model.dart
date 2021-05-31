@@ -10,7 +10,6 @@ class LoginViewModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
-
   Future login({@required String email, @required String password}) async {
     setLoading(true);
 
@@ -20,19 +19,12 @@ class LoginViewModel extends BaseModel {
     if (result == null) {
       _showErrorSnackBar(_authService.authErrorMessage);
       setLoading(false);
-    }else{
+    } else {
       _navigationService.pop();
     }
-
   }
 
-
   void _showErrorSnackBar(String message) {
-    Get.snackbar(
-        'Error',
-        message,
-        backgroundColor: Colors.red,
-        colorText: Colors.white
-    );
+    Get.snackbar('Error', message, backgroundColor: Colors.red, colorText: Colors.white);
   }
 }

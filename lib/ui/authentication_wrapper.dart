@@ -6,7 +6,9 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class AuthenticationWrapper extends StatefulWidget {
   AuthenticationWrapper(this._authState);
+
   final AuthState _authState;
+
   @override
   _AuthenticationWrapperState createState() => _AuthenticationWrapperState();
 }
@@ -21,7 +23,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
       builder: (BuildContext context, String snapshot) {
         if (snapshot == '0' || snapshot == null) {
           return WelcomeScreen();
-        }else{
+        } else {
           return Home();
         }
       },

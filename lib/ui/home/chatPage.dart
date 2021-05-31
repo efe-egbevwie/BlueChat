@@ -31,9 +31,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
-              stream: DatabaseService.getMessages(
-                  senderUid: AuthService.getUid(),
-                  receiverUid: widget.user.uid),
+              stream: DatabaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -56,11 +54,9 @@ class _ChatPageState extends State<ChatPage> {
                               itemBuilder: (context, index) {
                                 final message = messages[index];
                                 if (message.senderUid == AuthService.getUid()) {
-                                  return ChatBubble(
-                                      message: message, isMe: true);
+                                  return ChatBubble(message: message, isMe: true);
                                 } else {
-                                  return ChatBubble(
-                                      message: message, isMe: false);
+                                  return ChatBubble(message: message, isMe: false);
                                 }
                               });
                     }
@@ -84,12 +80,10 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment:
-              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
@@ -177,8 +171,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             color: Theme.of(context).primaryColor,
             onPressed: () {
               if (_messageController.text.isNotEmpty) {
-                chatPageViewModel.sendMessage(
-                    receiverUid: widget.uid, message: _messageController.text);
+                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _messageController.text);
                 _messageController.clear();
               }
             },

@@ -13,8 +13,7 @@ class SignUpViewModel extends BaseModel {
   Future signUp({@required String email, @required String password}) async {
     setLoading(true);
 
-    dynamic result =
-        await _authService.registerWithEmailAndPassword(email, password);
+    dynamic result = await _authService.registerWithEmailAndPassword(email, password);
     setLoading(false);
 
     if (result == null) {
@@ -26,7 +25,6 @@ class SignUpViewModel extends BaseModel {
   }
 
   void _showErrorSnackBar(String message) {
-    Get.snackbar('Error', message,
-        backgroundColor: Colors.red, colorText: Colors.white);
+    Get.snackbar('Error', message, backgroundColor: Colors.red, colorText: Colors.white);
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:bluechat/ui/authenticate/login.dart';
 import 'package:bluechat/ui/authenticate/signup.dart';
 import 'package:bluechat/ui/home/chatPage.dart';
@@ -6,8 +5,6 @@ import 'package:bluechat/ui/home/home.dart';
 import 'package:bluechat/ui/home/profile.dart';
 import 'package:bluechat/ui/welcome.dart';
 import 'package:flutter/material.dart';
-
-
 
 class RouteGenerator {
   static const String welcomeScreen = '/';

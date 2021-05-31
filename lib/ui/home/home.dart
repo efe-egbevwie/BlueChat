@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   NavigationService _navigationService = locator<NavigationService>();
-  
+
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthService>(context);
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   BlueChatUser blueChatUser = snapshot.data;
-                  return  UserAccountsDrawerHeader(
+                  return UserAccountsDrawerHeader(
                     accountName: Text(blueChatUser.name),
                     accountEmail: Text(blueChatUser.email),
                     currentAccountPicture: GestureDetector(
@@ -67,9 +67,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               onTap: () {
-                _navigationService.push(
-                  MaterialPageRoute(builder: (context) => SettingsScreen())
-                );
+                _navigationService.push(MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
               leading: Text('Settings'),
               trailing: Icon(

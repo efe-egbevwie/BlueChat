@@ -14,14 +14,11 @@ class NavigationService {
   }
 
   Future pushAndRemove(String routeName, {dynamic arguments}) {
-    return _navigationKey.currentState.pushNamedAndRemoveUntil(
-        routeName, (route) => false,
-        arguments: arguments);
+    return _navigationKey.currentState.pushNamedAndRemoveUntil(routeName, (route) => false, arguments: arguments);
   }
 
   Future pushReplacement(String routeName, {dynamic arguments}) {
-    return _navigationKey.currentState
-        .pushReplacementNamed(routeName, arguments: arguments);
+    return _navigationKey.currentState.pushReplacementNamed(routeName, arguments: arguments);
   }
 
   void pop() {

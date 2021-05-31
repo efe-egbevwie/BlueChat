@@ -74,8 +74,7 @@ class _MyAppState extends State<MyApp> {
                           displayColor: Colors.white,
                           bodyColor: Colors.white,
                         ),
-                    iconTheme:
-                        IconThemeData(color: Theme.of(context).accentColor)),
+                    iconTheme: IconThemeData(color: Theme.of(context).accentColor)),
                 initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
                 builder: (theme, darkTheme) => GetMaterialApp(
                       title: 'BlueChat',

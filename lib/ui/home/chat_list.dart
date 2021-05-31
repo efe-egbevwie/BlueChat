@@ -24,7 +24,7 @@ class ChatList extends StatelessWidget {
     );
   }
 
-  Widget chats() =>  ListView.builder(
+  Widget chats() => ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: users.length,
         itemBuilder: (context, index) {
@@ -45,8 +45,7 @@ class ChatList extends StatelessWidget {
                       : ListTile(
                           contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatPage(user: user)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
                           },
                           leading: CircleAvatar(
                             radius: 25,

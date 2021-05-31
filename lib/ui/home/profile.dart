@@ -45,8 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               SizedBox(height: 40),
-              Text('Create A Profile',
-                  style: TextStyle(fontSize: 30, color: Colors.blue)),
+              Text('Create A Profile', style: TextStyle(fontSize: 30, color: Colors.blue)),
               SizedBox(height: 40.0),
               GestureDetector(
                 onTap: () {
@@ -54,9 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
                 child: CircleAvatar(
                   radius: 55,
-                  foregroundImage: selectedImage != null
-                      ? FileImage(selectedImage)
-                      : AssetImage('assets/avatar.png'),
+                  foregroundImage: selectedImage != null ? FileImage(selectedImage) : AssetImage('assets/avatar.png'),
                   backgroundImage: AssetImage('assets/avatar.png'),
                 ),
               ),
@@ -75,8 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             textColor: Colors.black,
                             textCapitalization: TextCapitalization.none,
                             borderColor: Theme.of(context).primaryColor,
-                            validator: (val) =>
-                                val.isEmpty ? 'please enter a Name' : null,
+                            validator: (val) => val.isEmpty ? 'please enter a Name' : null,
                             initialValue: widget.user?.name,
                             onChanged: (val) => name = val,
                           ),
@@ -85,22 +81,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     SizedBox(height: 20),
                     uploading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor)
-                        : ElevatedButton(
+                        ? CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor)
+                        : CustomRoundButton(
+                            buttonText: 'Create a profile',
+                            borderColor: Theme.of(context).primaryColor,
+                            size: Size(size.width * 0.8, 50),
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 setState(() => uploading = true);
                                 completeRegistration();
                               }
                             },
-                            child: Text('Create profile'),
-                            style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
-                                minimumSize: Size(size.width * 0.8, 50),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30))),
-                          ),
+                          )
                   ],
                 ),
               )

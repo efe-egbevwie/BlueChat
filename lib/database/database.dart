@@ -9,8 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../services/auth.dart';
 
 class DatabaseService {
-  final CollectionReference userCollection =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
@@ -24,10 +23,7 @@ class DatabaseService {
   }
 
   Stream<BlueChatUser> get userData {
-    return userCollection
-        .doc(AuthService.getUid())
-        .snapshots()
-        .map(_userFromFireBaseSnapshot);
+    return userCollection.doc(AuthService.getUid()).snapshots().map(_userFromFireBaseSnapshot);
   }
 
   Future updateUserData(BlueChatUser blueChatUser) async {
@@ -39,10 +35,7 @@ class DatabaseService {
       if (file == null) {
         return;
       } else {
-        await firebaseStorage
-            .ref('ProfileImages')
-            .child(AuthService.getUid().toString())
-            .putFile(file);
+        await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).putFile(file);
       }
     } catch (e) {
       print(e.toString());
@@ -50,10 +43,7 @@ class DatabaseService {
   }
 
   Future<String> getProfilePictureUrl() async {
-    return await firebaseStorage
-        .ref('ProfileImages')
-        .child(AuthService.getUid().toString())
-        .getDownloadURL();
+    return await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).getDownloadURL();
   }
 
   static Stream<List<BlueChatUser>> getUsers() => FirebaseFirestore.instance
@@ -63,10 +53,8 @@ class DatabaseService {
       .snapshots()
       .transform(Utils.transformer(BlueChatUser.fromJson));
 
-  static Future uploadMessage(
-      {String senderUid, String receiverUid, String message}) async {
-    final messageCollection = FirebaseFirestore.instance
-        .collection('chats/message_database/messages');
+  static Future uploadMessage({String senderUid, String receiverUid, String message}) async {
+    final messageCollection = FirebaseFirestore.instance.collection('chats/message_database/messages');
 
     final usersCollection = FirebaseFirestore.instance.collection('users');
 
@@ -79,13 +67,10 @@ class DatabaseService {
 
     await messageCollection.add(newMessage.toJson());
 
-    await usersCollection
-        .doc(senderUid)
-        .update({'lastMessageTimeStamp': DateTime.now()});
+    await usersCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
   }
 
-  static Stream<List<Message>> getMessages(
-      {String senderUid, String receiverUid}) {
+  static Stream<List<Message>> getMessages({String senderUid, String receiverUid}) {
     List<String> params = [senderUid + receiverUid, receiverUid + senderUid];
     return FirebaseFirestore.instance
         .collection('chats/message_database/messages')
@@ -95,12 +80,11 @@ class DatabaseService {
         .transform(Utils.transformer(Message.fromJson));
   }
 
-  static Stream<List<Message>> getMostRecentMessage(String uid) =>
-      FirebaseFirestore.instance
-          .collection('chats/message_database/messages')
-          .where('uid', isEqualTo: uid)
-          .orderBy('createdAt', descending: true)
-          // .limit(3)
-          .snapshots()
-          .transform(Utils.transformer(Message.fromJson));
+  static Stream<List<Message>> getMostRecentMessage(String uid) => FirebaseFirestore.instance
+      .collection('chats/message_database/messages')
+      .where('uid', isEqualTo: uid)
+      .orderBy('createdAt', descending: true)
+      // .limit(3)
+      .snapshots()
+      .transform(Utils.transformer(Message.fromJson));
 }
