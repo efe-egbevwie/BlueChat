@@ -1,8 +1,8 @@
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/user.dart';
+import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/home/profile.dart';
-import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/ui/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               default:
                 if (snapshot.hasError) {
                   return Text('Something went wrong');

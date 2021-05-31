@@ -80,11 +80,15 @@ class DatabaseService {
         .transform(Utils.transformer(Message.fromJson));
   }
 
-  static Stream<List<Message>> getMostRecentMessage(String uid) => FirebaseFirestore.instance
-      .collection('chats/message_database/messages')
-      .where('uid', isEqualTo: uid)
-      .orderBy('createdAt', descending: true)
-      // .limit(3)
-      .snapshots()
-      .transform(Utils.transformer(Message.fromJson));
+  static Stream<List<Message>> getMostRecentMessage({String senderUid, String receiverUid}) {
+    List<String> params = [senderUid + receiverUid, receiverUid + senderUid];
+    return FirebaseFirestore.instance
+        .collection('chats/message_database/messages')
+        .where('messageUid', whereIn: params)
+        .where('receiverUid', isEqualTo: AuthService.getUid())
+        .orderBy('createdAt', descending: true)
+        .limit(1)
+        .snapshots()
+        .transform(Utils.transformer(Message.fromJson));
+  }
 }

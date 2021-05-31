@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'models/message.dart';
-
 class Utils {
   static StreamTransformer transformer<T>(T Function(Map<String, dynamic> json) fromJson) =>
       StreamTransformer<QuerySnapshot, List<T>>.fromHandlers(
@@ -28,12 +26,4 @@ class Utils {
 
   static T returnNonEmptyListOfMessages<T>(List<T> list, int index) =>
       index < 0 || index >= list.length ? null : list[index];
-
-  static List<Message> returnMessages(List<Message> messages) {
-    messages.forEach((message) {
-      if (messages.isNotEmpty && messages != null) {
-        return message;
-      }
-    });
-  }
 }

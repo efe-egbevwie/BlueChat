@@ -46,7 +46,7 @@ class _ChatPageState extends State<ChatPage> {
                     } else {
                       final messages = snapshot.data;
                       return messages.isEmpty
-                          ? Text('Say Hello')
+                          ? Center(child: Text('Say Hello', style: TextStyle(color: Colors.black)))
                           : ListView.builder(
                               physics: BouncingScrollPhysics(),
                               reverse: true,

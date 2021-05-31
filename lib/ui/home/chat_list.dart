@@ -1,8 +1,11 @@
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
+import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/ui/home/chatPage.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ChatList extends StatelessWidget {
@@ -36,26 +39,24 @@ class ChatList extends StatelessWidget {
             ),
             child: StreamProvider<List<Message>>.value(
               initialData: [],
-              value: DatabaseService.getMostRecentMessage(user.uid),
+              value: DatabaseService.getMostRecentMessage(senderUid: user.uid, receiverUid: AuthService.getUid()),
               child: Consumer<List<Message>>(
                 builder: (context, value, _) {
-                  // final message = value[index];
-                  return value == null
-                      ? Center(child: CircularProgressIndicator())
-                      : ListTile(
-                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
-                          },
-                          leading: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(user.avatarUrl),
-                          ),
-                          title: Text(user.name),
-                          // subtitle: Text(message.message),
-                          // trailing:
-                          //     Text(DateFormat.jm().format(message.createdAt)),
-                        );
+                  final message = value.firstOrNull;
+
+                  return ListTile(
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
+                    },
+                    leading: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: NetworkImage(user.avatarUrl),
+                    ),
+                    title: Text(user.name),
+                    subtitle: message != null ? Text(message.message) : Text(''),
+                    trailing: message != null ? Text(DateFormat.jm().format(message.createdAt)) : Text(''),
+                  );
                 },
               ),
             ),
