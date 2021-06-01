@@ -10,8 +10,9 @@ import '../services/auth.dart';
 
 class DatabaseService {
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
-
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  final CollectionReference messageCollection =
+      FirebaseFirestore.instance.collection('chats/message_database/messages');
 
   BlueChatUser _userFromFireBaseSnapshot(DocumentSnapshot snapshot) {
     return BlueChatUser(
@@ -46,18 +47,7 @@ class DatabaseService {
     return await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).getDownloadURL();
   }
 
-  static Stream<List<BlueChatUser>> getUsers() => FirebaseFirestore.instance
-      .collection('users')
-      .where('uid', isNotEqualTo: AuthService.getUid())
-      // .orderBy('lastMessageTimeStamp', descending: true)
-      .snapshots()
-      .transform(Utils.transformer(BlueChatUser.fromJson));
-
-  static Future uploadMessage({String senderUid, String receiverUid, String message}) async {
-    final messageCollection = FirebaseFirestore.instance.collection('chats/message_database/messages');
-
-    final usersCollection = FirebaseFirestore.instance.collection('users');
-
+  Future uploadMessage({String senderUid, String receiverUid, String message}) async {
     final newMessage = Message(
         senderUid: AuthService.getUid(),
         receiverUid: receiverUid,
@@ -67,23 +57,29 @@ class DatabaseService {
 
     await messageCollection.add(newMessage.toJson());
 
-    await usersCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
+    await userCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
   }
 
-  static Stream<List<Message>> getMessages({String senderUid, String receiverUid}) {
+  Stream<List<BlueChatUser>> getUsers() {
+    return userCollection
+        .where('uid', isNotEqualTo: AuthService.getUid())
+        // .orderBy('lastMessageTimeStamp', descending: true)
+        .snapshots()
+        .transform(Utils.transformer(BlueChatUser.fromJson));
+  }
+
+  Stream<List<Message>> getMessages({String senderUid, String receiverUid}) {
     List<String> params = [senderUid + receiverUid, receiverUid + senderUid];
-    return FirebaseFirestore.instance
-        .collection('chats/message_database/messages')
+    return messageCollection
         .where('messageUid', whereIn: params)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .transform(Utils.transformer(Message.fromJson));
   }
 
-  static Stream<List<Message>> getMostRecentMessage({String senderUid, String receiverUid}) {
+  Stream<List<Message>> getMostRecentMessage({String senderUid, String receiverUid}) {
     List<String> params = [senderUid + receiverUid, receiverUid + senderUid];
-    return FirebaseFirestore.instance
-        .collection('chats/message_database/messages')
+    return messageCollection
         .where('messageUid', whereIn: params)
         .where('receiverUid', isEqualTo: AuthService.getUid())
         .orderBy('createdAt', descending: true)

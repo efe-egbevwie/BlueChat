@@ -19,6 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   NavigationService _navigationService = locator<NavigationService>();
+  DatabaseService _databaseService = locator<DatabaseService>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +28,14 @@ class _HomeState extends State<Home> {
       // backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          'CHATS',
-        ),
+        title: Text('CHATS'),
         centerTitle: true,
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             StreamBuilder<BlueChatUser>(
-              stream: DatabaseService().userData,
+              stream: _databaseService.userData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   BlueChatUser blueChatUser = snapshot.data;
@@ -89,7 +88,7 @@ class _HomeState extends State<Home> {
       ),
       body: SafeArea(
         child: StreamBuilder<List<BlueChatUser>>(
-          stream: DatabaseService.getUsers(),
+          stream: _databaseService.getUsers(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../service_locator.dart';
+
 class ChatList extends StatelessWidget {
   final List<BlueChatUser> users;
 
@@ -18,49 +20,47 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Message message;
+    DatabaseService _databaseService = locator<DatabaseService>();
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(10),
-        child: chats(),
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Container(
+              height: 70,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide()),
+              ),
+              child: StreamProvider<List<Message>>.value(
+                initialData: [],
+                value: _databaseService.getMostRecentMessage(senderUid: user.uid, receiverUid: AuthService.getUid()),
+                child: Consumer<List<Message>>(
+                  builder: (context, value, _) {
+                    final message = value.firstOrNull;
+
+                    return ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
+                      },
+                      leading: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(user.avatarUrl),
+                      ),
+                      title: Text(user.name),
+                      subtitle: message != null ? Text(message.message) : Text(''),
+                      trailing: message != null ? Text(DateFormat.jm().format(message.createdAt)) : Text(''),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
-
-  Widget chats() => ListView.builder(
-        physics: BouncingScrollPhysics(),
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return Container(
-            height: 70,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide()),
-            ),
-            child: StreamProvider<List<Message>>.value(
-              initialData: [],
-              value: DatabaseService.getMostRecentMessage(senderUid: user.uid, receiverUid: AuthService.getUid()),
-              child: Consumer<List<Message>>(
-                builder: (context, value, _) {
-                  final message = value.firstOrNull;
-
-                  return ListTile(
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
-                    },
-                    leading: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(user.avatarUrl),
-                    ),
-                    title: Text(user.name),
-                    subtitle: message != null ? Text(message.message) : Text(''),
-                    trailing: message != null ? Text(DateFormat.jm().format(message.createdAt)) : Text(''),
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      );
 }
