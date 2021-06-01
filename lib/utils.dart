@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   static StreamTransformer transformer<T>(T Function(Map<String, dynamic> json) fromJson) =>
@@ -24,6 +25,15 @@ class Utils {
     return date.toUtc();
   }
 
-  static T returnNonEmptyListOfMessages<T>(List<T> list, int index) =>
-      index < 0 || index >= list.length ? null : list[index];
+  static formatDateTime(DateTime dateTime) {
+    if (dateTime.day == DateTime.now().day) {
+      return DateFormat('H: mm a').format(dateTime);
+    } else if (dateTime.isBefore(DateTime.now().subtract(Duration(hours: 168)))) {
+      return DateFormat('EEE, d, MMM, yyy, H:mm a').format(dateTime);
+    } else if (dateTime.isBefore(DateTime.now().subtract(Duration(hours: 12)))) {
+      return DateFormat('EEE, H:mm a').format(dateTime);
+    } else {
+      return DateFormat('H: mm a').format(dateTime);
+    }
+  }
 }

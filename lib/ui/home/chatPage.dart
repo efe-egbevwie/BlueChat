@@ -2,11 +2,11 @@ import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../service_locator.dart';
@@ -121,7 +121,7 @@ class ChatBubble extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(left: 23, right: 23),
           child: Text(
-            DateFormat.jm().format(message.createdAt),
+            Utils.formatDateTime(message.createdAt),
             style: TextStyle(
               color: Colors.black54,
             ),

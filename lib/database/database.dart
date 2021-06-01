@@ -63,7 +63,8 @@ class DatabaseService {
   Stream<List<BlueChatUser>> getUsers() {
     return userCollection
         .where('uid', isNotEqualTo: AuthService.getUid())
-        // .orderBy('lastMessageTimeStamp', descending: true)
+        //.where('lastMessageTimeSTamp', isGreaterThan: '1')
+        //.orderBy('lastMessageTimeStamp', descending: true)
         .snapshots()
         .transform(Utils.transformer(BlueChatUser.fromJson));
   }

@@ -5,10 +5,10 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/ui/home/chatPage.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../service_locator.dart';
+import '../../utils.dart';
 
 class ChatList extends StatelessWidget {
   final List<BlueChatUser> users;
@@ -52,7 +52,7 @@ class ChatList extends StatelessWidget {
                       ),
                       title: Text(user.name),
                       subtitle: message != null ? Text(message.message) : Text(''),
-                      trailing: message != null ? Text(DateFormat.jm().format(message.createdAt)) : Text(''),
+                      trailing: message != null ? Text(Utils.formatDateTime(message.createdAt)) : Text(''),
                     );
                   },
                 ),
