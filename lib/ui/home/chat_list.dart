@@ -3,6 +3,7 @@ import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/ui/home/chatPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class ChatList extends StatelessWidget {
           itemBuilder: (context, index) {
             final user = users[index];
             return Container(
-              height: 70,
+              height: 90,
               decoration: BoxDecoration(
                 border: Border(bottom: BorderSide()),
               ),
@@ -48,7 +49,7 @@ class ChatList extends StatelessWidget {
                       },
                       leading: CircleAvatar(
                         radius: 25,
-                        backgroundImage: NetworkImage(user.avatarUrl),
+                        backgroundImage: CachedNetworkImageProvider(user.avatarUrl),
                       ),
                       title: Text(user.name),
                       subtitle: message != null ? Text(message.message) : Text(''),

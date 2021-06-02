@@ -67,6 +67,7 @@ dependencies:
   #for persisting app theme
 
   adaptive_theme: ^2.2.0
+  cached_network_image: ^2.5.1
 
 dev_dependencies:
   json_serializable: ^3.5.1

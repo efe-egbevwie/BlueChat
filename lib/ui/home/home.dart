@@ -4,6 +4,7 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/home/profile.dart';
 import 'package:bluechat/ui/settings_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
                                 )));
                       },
                       child: CircleAvatar(
-                        foregroundImage: NetworkImage(blueChatUser.avatarUrl),
+                        foregroundImage: CachedNetworkImageProvider(blueChatUser.avatarUrl),
                       ),
                     ),
                   );
