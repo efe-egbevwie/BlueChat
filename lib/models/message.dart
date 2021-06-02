@@ -8,12 +8,7 @@ class Message {
   final String message;
   final DateTime createdAt;
 
-  const Message(
-      {@required this.senderUid,
-      @required this.receiverUid,
-      this.messageUid,
-      this.message,
-      this.createdAt});
+  const Message({@required this.senderUid, @required this.receiverUid, this.messageUid, this.message, this.createdAt});
 
   static Message fromJson(Map<String, dynamic> json) => Message(
         senderUid: json['senderUid'],

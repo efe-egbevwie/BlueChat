@@ -47,7 +47,7 @@ class DatabaseService {
     return await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).getDownloadURL();
   }
 
-  Future uploadMessage({String senderUid, String receiverUid, String message}) async {
+  void uploadMessage({String senderUid, String receiverUid, String message}) {
     final newMessage = Message(
         senderUid: AuthService.getUid(),
         receiverUid: receiverUid,
@@ -55,9 +55,9 @@ class DatabaseService {
         message: message,
         createdAt: DateTime.now());
 
-    await messageCollection.add(newMessage.toJson());
+     messageCollection.add(newMessage.toJson());
 
-    await userCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
+     userCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
   }
 
   Stream<List<BlueChatUser>> getUsers() {
@@ -82,7 +82,6 @@ class DatabaseService {
     List<String> params = [senderUid + receiverUid, receiverUid + senderUid];
     return messageCollection
         .where('messageUid', whereIn: params)
-        .where('receiverUid', isEqualTo: AuthService.getUid())
         .orderBy('createdAt', descending: true)
         .limit(1)
         .snapshots()

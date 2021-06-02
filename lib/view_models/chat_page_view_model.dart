@@ -6,9 +6,9 @@ import 'base_model.dart';
 
 class ChatPageViewModel extends BaseModel {
   DatabaseService _databaseService = locator<DatabaseService>();
-  void sendMessage({String receiverUid, String message}) async {
+  void sendMessage({String receiverUid, String message}) {
     try {
-      await _databaseService.uploadMessage(senderUid: AuthService.getUid(), receiverUid: receiverUid, message: message);
+      _databaseService.uploadMessage(senderUid: AuthService.getUid(), receiverUid: receiverUid, message: message);
     } catch (e) {
       print(e.toString());
     }

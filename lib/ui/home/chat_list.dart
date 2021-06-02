@@ -24,7 +24,7 @@ class ChatList extends StatelessWidget {
     DatabaseService _databaseService = locator<DatabaseService>();
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemCount: users.length,
@@ -43,7 +43,7 @@ class ChatList extends StatelessWidget {
                     final message = value.firstOrNull;
 
                     return ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+                      contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 30),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(user: user)));
                       },
