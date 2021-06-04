@@ -4,7 +4,6 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/home/profile.dart';
 import 'package:bluechat/ui/settings_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +50,7 @@ class _HomeState extends State<Home> {
                                 )));
                       },
                       child: CircleAvatar(
-                        foregroundImage: CachedNetworkImageProvider(blueChatUser.avatarUrl),
+                        foregroundImage: NetworkImage(blueChatUser.avatarUrl),
                       ),
                     ),
                   );
@@ -96,11 +95,12 @@ class _HomeState extends State<Home> {
                 return Center(child: CircularProgressIndicator());
               default:
                 if (snapshot.hasError) {
+                  print(snapshot.error);
                   return Text('Something went wrong');
                 } else {
                   final users = snapshot.data;
                   if (users.isEmpty) {
-                    return Text('No users Found');
+                    return Center(child: Text('No users Found'));
                   } else {
                     return Column(
                       children: [

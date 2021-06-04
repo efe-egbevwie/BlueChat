@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/services/auth.dart';
 
@@ -12,5 +14,14 @@ class ChatPageViewModel extends BaseModel {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void sendImage({File image, String imageDescription, String senderUid, String receiverUid}) {
+    try{
+      _databaseService.sendImage(senderUid, receiverUid, image);
+    }catch(e){
+      print(e.toString());
+    }
+
   }
 }

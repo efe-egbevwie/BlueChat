@@ -13,6 +13,7 @@ class DatabaseService {
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   final CollectionReference messageCollection =
       FirebaseFirestore.instance.collection('chats/message_database/messages');
+  String imageUrl;
 
   BlueChatUser _userFromFireBaseSnapshot(DocumentSnapshot snapshot) {
     return BlueChatUser(
@@ -31,20 +32,20 @@ class DatabaseService {
     userCollection.doc(blueChatUser.uid).set(blueChatUser.toJson());
   }
 
-  Future uploadProfileImage(File file) async {
+  Future uploadImage({String path, File file, String imageName}) async {
     try {
       if (file == null) {
         return;
       } else {
-        await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).putFile(file);
+        await firebaseStorage.ref(path).child(imageName).putFile(file);
       }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<String> getProfilePictureUrl() async {
-    return await firebaseStorage.ref('ProfileImages').child(AuthService.getUid().toString()).getDownloadURL();
+  Future<String> getImageUrl({String path, String imageName}) async {
+    return await firebaseStorage.ref(path).child(imageName).getDownloadURL().then((url) => imageUrl = url);
   }
 
   void uploadMessage({String senderUid, String receiverUid, String message}) {
@@ -55,9 +56,26 @@ class DatabaseService {
         message: message,
         createdAt: DateTime.now());
 
-     messageCollection.add(newMessage.toJson());
+    messageCollection.add(newMessage.toJson());
 
-     userCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
+    userCollection.doc(senderUid).update({'lastMessageTimeStamp': DateTime.now()});
+  }
+
+  Future<void> sendImage(String senderUid, String receiverUid, File image, {String imageDescription}) async {
+    var imageName = Utils.generateImageUid();
+    await uploadImage(path: 'images/${receiverUid + senderUid}/$imageName', file: image);
+    await getImageUrl(path: 'images/${receiverUid + senderUid}', imageName: imageName);
+
+    final imageMessage = Message(
+        senderUid: senderUid,
+        receiverUid: receiverUid,
+        message: '',
+        messageUid: receiverUid + senderUid,
+        imageUrl: imageUrl,
+        imageDescription: imageDescription,
+        createdAt: DateTime.now());
+
+    await messageCollection.add(imageMessage.toJson());
   }
 
   Stream<List<BlueChatUser>> getUsers() {

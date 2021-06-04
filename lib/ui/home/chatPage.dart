@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
@@ -5,8 +7,10 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/widgets/widgets.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../service_locator.dart';
@@ -35,7 +39,9 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
-              stream: _databaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
+              stream: _databaseService.getMessages(
+                  senderUid: AuthService.getUid(),
+                  receiverUid: widget.user.uid),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -50,18 +56,32 @@ class _ChatPageState extends State<ChatPage> {
                     } else {
                       final messages = snapshot.data;
                       return messages.isEmpty
-                          ? Center(child: Text('Say Hello', style: TextStyle(color: Colors.black)))
+                          ? Center(
+                              child: Text('Say Hello',
+                                  style: TextStyle(color: Colors.black)))
                           : ListView.builder(
                               physics: BouncingScrollPhysics(),
                               reverse: true,
                               itemCount: messages.length,
                               itemBuilder: (context, index) {
                                 final message = messages[index];
-                                if (message.senderUid == AuthService.getUid()) {
-                                  return ChatBubble(message: message, isMe: true);
-                                } else {
-                                  return ChatBubble(message: message, isMe: false);
+                                if (message.senderUid == AuthService.getUid() &&
+                                    message.imageUrl == null) {
+                                  return ChatBubble(
+                                      message: message, isMe: true);
+                                } else if (message.senderUid ==
+                                        widget.user.uid &&
+                                    message.imageUrl == null) {
+                                  return ChatBubble(
+                                      message: message, isMe: false);
+                                } else if (message.imageUrl != null) {
+                                  return ImageMessageWidget(
+                                      message: message,
+                                      isMe: message.senderUid ==
+                                          AuthService.getUid());
                                 }
+
+                                return Container();
                               });
                     }
                 }
@@ -84,10 +104,12 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment:
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
@@ -143,6 +165,8 @@ class NewMessageWidget extends StatefulWidget {
 
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _messageController = TextEditingController();
+  final picker = ImagePicker();
+  File selectedImage;
 
   @override
   void dispose() {
@@ -167,6 +191,12 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
               textColor: Colors.black,
               textCapitalization: TextCapitalization.sentences,
               controller: _messageController,
+              suffixIcon: IconButton(
+                icon: Icon(Icons.image),
+                onPressed: () async {
+                  showPicker(context);
+                },
+              ),
             ),
           ),
           IconButton(
@@ -175,7 +205,8 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             color: Theme.of(context).primaryColor,
             onPressed: () {
               if (_messageController.text.isNotEmpty) {
-                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _messageController.text);
+                chatPageViewModel.sendMessage(
+                    receiverUid: widget.uid, message: _messageController.text);
                 _messageController.clear();
               }
             },
@@ -183,5 +214,76 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         ],
       ),
     );
+  }
+
+  void showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return SafeArea(
+              child: Container(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.photo_library),
+                  title: Text('Gallery'),
+                  onTap: () {
+                    _imageFromGallery();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.camera),
+                  title: Text('camera'),
+                  onTap: () {
+                    _imageFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          ));
+        });
+  }
+
+  _imageFromCamera() async {
+    final chatPageViewModel =
+        Provider.of<ChatPageViewModel>(context, listen: false);
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      selectedImage = File(pickedFile.path);
+      setState(() {});
+      chatPageViewModel.sendImage(
+          image: selectedImage,
+          senderUid: AuthService.getUid(),
+          receiverUid: widget.uid);
+    } else {
+      Flushbar(
+        message: 'No Image Selected',
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    }
+  }
+
+  _imageFromGallery() async {
+    final chatPageViewModel =
+        Provider.of<ChatPageViewModel>(context, listen: false);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        selectedImage = File(pickedFile.path);
+      });
+      chatPageViewModel.sendImage(
+          image: selectedImage,
+          senderUid: AuthService.getUid(),
+          receiverUid: widget.uid);
+    } else {
+      Flushbar(
+        message: 'No Image Selected',
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    }
   }
 }

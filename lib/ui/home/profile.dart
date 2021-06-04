@@ -105,8 +105,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void completeRegistration() async {
     try {
-      await _databaseService.uploadProfileImage(selectedImage);
-      String avatarUrl = await _databaseService.getProfilePictureUrl();
+      await _databaseService.uploadImage(
+          path: 'ProfileImages', file: selectedImage, imageName: AuthService.getUid().toString());
+      String avatarUrl =
+          await _databaseService.getImageUrl(path: 'ProfileImages', imageName: AuthService.getUid().toString());
       await _databaseService.updateUserData(BlueChatUser(
           name: widget.user?.name ?? name,
           uid: uid,

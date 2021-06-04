@@ -42,6 +42,13 @@ class ChatList extends StatelessWidget {
                   builder: (context, value, _) {
                     final message = value.firstOrNull;
 
+                    // if (message.imageUrl != null) {
+                    //   return Container(
+                    //     height: 30,
+                    //     width: 20,
+                    //   );
+                    // }
+
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 30),
                       onTap: () {

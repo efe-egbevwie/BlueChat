@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -35,5 +36,11 @@ class Utils {
     } else {
       return DateFormat('H: mm a').format(dateTime);
     }
+  }
+
+  static String generateImageUid() {
+    var randomGenerator = Random.secure();
+    var noteId = List.generate(12, (_) => randomGenerator.nextInt(1000000000));
+    return noteId.first.toString();
   }
 }
