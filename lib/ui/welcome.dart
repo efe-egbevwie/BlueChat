@@ -1,7 +1,7 @@
 import 'package:bluechat/routes.dart';
 import 'package:bluechat/service_locator.dart';
 import 'package:bluechat/services/navigation_service.dart';
-import 'package:bluechat/widgets/widgets.dart';
+import 'package:bluechat/widgets/custom_round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

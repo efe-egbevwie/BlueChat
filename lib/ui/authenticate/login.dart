@@ -1,5 +1,6 @@
 import 'package:bluechat/view_models/login_view_model.dart';
-import 'package:bluechat/widgets/widgets.dart';
+import 'package:bluechat/widgets/custom_round_button.dart';
+import 'package:bluechat/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';

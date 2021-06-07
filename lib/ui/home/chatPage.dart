@@ -6,7 +6,9 @@ import 'package:bluechat/models/user.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
-import 'package:bluechat/widgets/widgets.dart';
+import 'package:bluechat/widgets/custom_text_field.dart';
+import 'package:bluechat/widgets/image_message_widget.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
