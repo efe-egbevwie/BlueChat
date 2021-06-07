@@ -66,7 +66,8 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               onTap: () {
-                _navigationService.push(MaterialPageRoute(builder: (context) => SettingsScreen()));
+                _navigationService.push(
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
               leading: Text('Settings'),
               trailing: Icon(

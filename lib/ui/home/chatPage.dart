@@ -7,6 +7,7 @@ import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/widgets/widgets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,16 +33,44 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Center(child: Text(widget.user.name)),
+        title: SizedBox(
+          width: double.infinity,
+          height: kToolbarHeight,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 4,
+                bottom: 4,
+                child: CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(widget.user.avatarUrl),
+                ),
+              ),
+              Positioned(
+                left: 50,
+                top: 8,
+                child: Column(
+                  children: [
+                    Text(
+                      widget.user.name,
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    SizedBox(height: 7),
+                    Text(
+                      'last seen ',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<List<Message>>(
-              stream: _databaseService.getMessages(
-                  senderUid: AuthService.getUid(),
-                  receiverUid: widget.user.uid),
+              stream: _databaseService.getMessages(senderUid: AuthService.getUid(), receiverUid: widget.user.uid),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -56,29 +85,20 @@ class _ChatPageState extends State<ChatPage> {
                     } else {
                       final messages = snapshot.data;
                       return messages.isEmpty
-                          ? Center(
-                              child: Text('Say Hello',
-                                  style: TextStyle(color: Colors.black)))
+                          ? Center(child: Text('Say Hello', style: TextStyle(color: Colors.black)))
                           : ListView.builder(
                               physics: BouncingScrollPhysics(),
                               reverse: true,
                               itemCount: messages.length,
                               itemBuilder: (context, index) {
                                 final message = messages[index];
-                                if (message.senderUid == AuthService.getUid() &&
-                                    message.imageUrl == null) {
-                                  return ChatBubble(
-                                      message: message, isMe: true);
-                                } else if (message.senderUid ==
-                                        widget.user.uid &&
-                                    message.imageUrl == null) {
-                                  return ChatBubble(
-                                      message: message, isMe: false);
+                                if (message.senderUid == AuthService.getUid() && message.imageUrl == null) {
+                                  return ChatBubble(message: message, isMe: true);
+                                } else if (message.senderUid == widget.user.uid && message.imageUrl == null) {
+                                  return ChatBubble(message: message, isMe: false);
                                 } else if (message.imageUrl != null) {
                                   return ImageMessageWidget(
-                                      message: message,
-                                      isMe: message.senderUid ==
-                                          AuthService.getUid());
+                                      message: message, isMe: message.senderUid == AuthService.getUid());
                                 }
 
                                 return Container();
@@ -104,12 +124,10 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment:
-              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
@@ -205,8 +223,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             color: Theme.of(context).primaryColor,
             onPressed: () {
               if (_messageController.text.isNotEmpty) {
-                chatPageViewModel.sendMessage(
-                    receiverUid: widget.uid, message: _messageController.text);
+                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _messageController.text);
                 _messageController.clear();
               }
             },
@@ -247,16 +264,12 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
   }
 
   _imageFromCamera() async {
-    final chatPageViewModel =
-        Provider.of<ChatPageViewModel>(context, listen: false);
+    final chatPageViewModel = Provider.of<ChatPageViewModel>(context, listen: false);
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
       selectedImage = File(pickedFile.path);
       setState(() {});
-      chatPageViewModel.sendImage(
-          image: selectedImage,
-          senderUid: AuthService.getUid(),
-          receiverUid: widget.uid);
+      chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
     } else {
       Flushbar(
         message: 'No Image Selected',
@@ -267,17 +280,13 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
   }
 
   _imageFromGallery() async {
-    final chatPageViewModel =
-        Provider.of<ChatPageViewModel>(context, listen: false);
+    final chatPageViewModel = Provider.of<ChatPageViewModel>(context, listen: false);
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         selectedImage = File(pickedFile.path);
       });
-      chatPageViewModel.sendImage(
-          image: selectedImage,
-          senderUid: AuthService.getUid(),
-          receiverUid: widget.uid);
+      chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
     } else {
       Flushbar(
         message: 'No Image Selected',
