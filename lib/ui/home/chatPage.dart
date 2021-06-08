@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/models/message.dart';
 import 'package:bluechat/models/user.dart';
+import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/widgets/custom_text_field.dart';
 import 'package:bluechat/widgets/image_message_widget.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -267,11 +268,14 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
 
   _imageFromCamera() async {
     final chatPageViewModel = Provider.of<ChatPageViewModel>(context, listen: false);
+    NavigationService _navigationService = locator<NavigationService>();
+
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
       selectedImage = File(pickedFile.path);
       setState(() {});
-      chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
+      _navigationService.pushNamed(RouteGenerator.cropImageScreen, arguments: pickedFile);
+      //chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
     } else {
       Flushbar(
         message: 'No Image Selected',
@@ -283,12 +287,15 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
 
   _imageFromGallery() async {
     final chatPageViewModel = Provider.of<ChatPageViewModel>(context, listen: false);
+    NavigationService _navigationService = locator<NavigationService>();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         selectedImage = File(pickedFile.path);
       });
-      chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
+      _navigationService.pushNamed(RouteGenerator.cropImageScreen, arguments: selectedImage);
+
+      //chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
     } else {
       Flushbar(
         message: 'No Image Selected',

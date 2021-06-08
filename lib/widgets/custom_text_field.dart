@@ -15,19 +15,19 @@ class CustomTextField extends StatefulWidget {
     this.textCapitalization,
     this.onChanged,
   }) : super(key: key);
-  final Widget prefixIcon;
-  final Widget suffixIcon;
-  final String hintText;
-  final Color borderColor;
+  Widget prefixIcon;
+  Widget suffixIcon;
+  String hintText;
+  Color borderColor;
   bool obscureText;
-  final FormFieldValidator<String> validator;
-  final TextEditingController controller;
-  final String initialValue;
-  final Color textColor;
-  final TextCapitalization textCapitalization;
-  final bool enableAutoCorrect = true;
-  final bool enableSuggestions = true;
-  final Function onChanged;
+  FormFieldValidator<String> validator;
+  TextEditingController controller;
+  String initialValue;
+  Color textColor;
+  TextCapitalization textCapitalization;
+  bool enableAutoCorrect = true;
+  bool enableSuggestions = true;
+  Function onChanged;
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
