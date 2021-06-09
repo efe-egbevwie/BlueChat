@@ -141,7 +141,7 @@ class ChatBubble extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isMe ? Theme.of(context).primaryColor : Colors.white,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
@@ -154,7 +154,7 @@ class ChatBubble extends StatelessWidget {
                 child: SelectableText(
                   message.message,
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: isMe ? Colors.white : Colors.black,
                   ),
                 ),
               ),
