@@ -75,7 +75,7 @@ class DatabaseService {
         imageDescription: imageDescription,
         createdAt: DateTime.now());
 
-    await messageCollection.add(imageMessage.toJson());
+    messageCollection.add(imageMessage.toJson());
   }
 
   Stream<List<BlueChatUser>> getUsers() {

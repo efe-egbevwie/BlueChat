@@ -2,6 +2,7 @@ import 'package:bluechat/database/database.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/services/shared_prefs.dart';
+import 'package:bluechat/view_models/crop_image_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
@@ -14,4 +15,5 @@ void setupLocator() async {
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => DatabaseService());
+  locator.registerLazySingleton(() => CropImageViewModel());
 }

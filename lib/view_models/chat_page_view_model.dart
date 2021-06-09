@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bluechat/database/database.dart';
 import 'package:bluechat/services/auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../service_locator.dart';
 import 'base_model.dart';
@@ -16,12 +17,15 @@ class ChatPageViewModel extends BaseModel {
     }
   }
 
-  void sendImage({File image, String imageDescription, String senderUid, String receiverUid}) {
-    try{
+  void sendImage(
+      {@required File image,
+      @required String imageDescription,
+      @required String senderUid,
+      @required String receiverUid}) {
+    try {
       _databaseService.sendImage(senderUid, receiverUid, image);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
     }
-
   }
 }

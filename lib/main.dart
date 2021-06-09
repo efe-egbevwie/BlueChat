@@ -6,6 +6,7 @@ import 'package:bluechat/services/auth_state.dart';
 import 'package:bluechat/services/navigation_service.dart';
 import 'package:bluechat/ui/authentication_wrapper.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
+import 'package:bluechat/view_models/crop_image_view_model.dart';
 import 'package:bluechat/view_models/login_view_model.dart';
 import 'package:bluechat/view_models/signup_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
         ChangeNotifierProvider(create: (context) => SignUpViewModel()),
-        ChangeNotifierProvider(create: (context) => ChatPageViewModel())
+        ChangeNotifierProvider(create: (context) => ChatPageViewModel()),
+        ChangeNotifierProvider(create: (context) => CropImageViewModel())
       ],
       child: PreferenceBuilder<String>(
           preference: widget.authState.uid,

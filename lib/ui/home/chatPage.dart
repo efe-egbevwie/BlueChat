@@ -6,6 +6,7 @@ import 'package:bluechat/models/user.dart';
 import 'package:bluechat/routes.dart';
 import 'package:bluechat/services/auth.dart';
 import 'package:bluechat/services/navigation_service.dart';
+import 'package:bluechat/ui/crop_image_screen.dart';
 import 'package:bluechat/utils.dart';
 import 'package:bluechat/view_models/chat_page_view_model.dart';
 import 'package:bluechat/widgets/custom_text_field.dart';
@@ -111,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          NewMessageWidget(uid: widget.user.uid)
+          NewMessageWidget(receiverUid: widget.user.uid)
         ],
       ),
     );
@@ -176,9 +177,9 @@ class ChatBubble extends StatelessWidget {
 }
 
 class NewMessageWidget extends StatefulWidget {
-  final String uid;
+  final String receiverUid;
 
-  const NewMessageWidget({this.uid});
+  const NewMessageWidget({this.receiverUid});
 
   @override
   _NewMessageWidgetState createState() => _NewMessageWidgetState();
@@ -226,7 +227,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             color: Theme.of(context).primaryColor,
             onPressed: () {
               if (_messageController.text.isNotEmpty) {
-                chatPageViewModel.sendMessage(receiverUid: widget.uid, message: _messageController.text);
+                chatPageViewModel.sendMessage(receiverUid: widget.receiverUid, message: _messageController.text);
                 _messageController.clear();
               }
             },
@@ -293,7 +294,8 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
       setState(() {
         selectedImage = File(pickedFile.path);
       });
-      _navigationService.pushNamed(RouteGenerator.cropImageScreen, arguments: selectedImage);
+      _navigationService.push(MaterialPageRoute(
+          builder: (context) => CropImageScreen(image: selectedImage, receiverUid: widget.receiverUid)));
 
       //chatPageViewModel.sendImage(image: selectedImage, senderUid: AuthService.getUid(), receiverUid: widget.uid);
     } else {
