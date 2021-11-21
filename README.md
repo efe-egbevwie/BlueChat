@@ -5,6 +5,36 @@ Firebase cloud Firestore hosts the app data in a document database.
 Firebase auth is used to provide user authentication.
 Firebase Storage is used to host file storage for the app files like pictures etc.
 
+# ScreenShots
+### Day mode
+
+###Sign Up Screen
+![day_mode_sign_up](https://user-images.githubusercontent.com/51890618/142744355-55c9cfcc-7810-45d5-9266-13e8170491ec.jpg)
+
+
+###Create Profile Screen
+![day_mode_create_profile](https://user-images.githubusercontent.com/51890618/142744357-781b0dad-e2a1-407b-90f0-da01f5e40689.jpg)
+
+###Chats Page
+![day_mode_chat_page_2](https://user-images.githubusercontent.com/51890618/142744720-12da214d-5344-4ee1-9f86-1933b5267532.jpg)
+
+
+###Navigation Drawer
+![day_mode_nav_drawer](https://user-images.githubusercontent.com/51890618/142744358-37264806-9ca1-4fef-ab4a-593bac0bd8e7.jpg)
+
+
+## Dark Mode
+
+###Sign In Screen
+![dark_mode_sign_in](https://user-images.githubusercontent.com/51890618/142744353-ecb3152c-6dfa-47ee-a1ef-2e99854bfdbd.jpg)
+
+###Chats Page
+![dark_mode_chats_page](https://user-images.githubusercontent.com/51890618/142744620-5a5e2ebf-e446-4a18-9ac4-a2c129761460.jpg)
+
+### Chat Detail Page
+![dark_mode_chat_page](https://user-images.githubusercontent.com/51890618/142744623-babfce8c-b4fb-4e16-a2c1-c75d199c60cc.jpg)
+
+
 # Libraries/Packages used
 ## Firebase Core
 The Firebase core plugin connects the app to a firebase project.
